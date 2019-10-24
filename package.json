@@ -1,0 +1,11 @@
+{
+  "name": "order-ice-cream-app",
+  "version": "1.0.0",
+  "description": "Aplicacion para la clase diseno y analisis de sistemas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivan V",
+  "license": "ISC"
+}
