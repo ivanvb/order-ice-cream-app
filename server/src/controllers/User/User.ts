@@ -1,12 +1,13 @@
 import {Entity} from '../Entity/Entity';
 import { UserBuilder } from './User.builder';
+import { Order } from '../Order/Order';
 
 export class User extends Entity{
 
     name: String;
     password: String;
     email: String;
-    orders;
+    orders: Order[];
     ordersPacks;
 
     constructor(userBuilder: UserBuilder){

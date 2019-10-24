@@ -1,12 +1,13 @@
 import {User} from './User';
 import {Guid} from '../Entity/Guid';
+import { Order } from '../Order/Order';
 
 export class UserBuilder{
 
     private _name: String;
     private _email: String;
     private _password: String;
-    private _orders;
+    private _orders: Order[];
     private _ordersPacks;
     private _guid: Guid;
     private _createdAt: Date;
@@ -59,7 +60,7 @@ export class UserBuilder{
         return this._email;
     }
 
-    get orders(){
+    get orders(): Order[]{
         return this._orders;
     }
 
