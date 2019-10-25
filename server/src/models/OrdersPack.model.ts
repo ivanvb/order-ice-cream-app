@@ -4,7 +4,7 @@ const OrdersPackSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     creator: [{type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
     expirationDate: Date,
-    guid: String,
+    guid: {type: String, unique: true},
     createdAt: Date,
     updatedAt: Date
 })

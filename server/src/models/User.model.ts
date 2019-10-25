@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     email: String,
     orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
     ordersPacks: [{type: mongoose.Schema.Types.ObjectId, ref: 'OrdersPack'}],
-    guid: String,
+    guid: {type: String, unique: true},
     createdAt: Date,
     updatedAt: Date
 })
