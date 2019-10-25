@@ -1,13 +1,12 @@
 import { User } from "../User/User";
 import { Order } from "../Order/Order";
-import { Guid } from "../Entity/Guid";
 import { OrdersPack } from "./OrdersPack";
 
 export class OrdersPackBuilder{
     private _creator: User;
     private _orders: Order[];
     private _expirationDate: Date;
-    private _guid: Guid;
+    private _guid: String;
     private _createdAt: Date;
     private _updatedAt: Date;
 
@@ -21,7 +20,7 @@ export class OrdersPackBuilder{
         return this;
     }
 
-    public setGuid(guid: Guid): OrdersPackBuilder{
+    public setGuid(guid: String): OrdersPackBuilder{
         this._guid =  guid;
         return this;
     }
@@ -52,7 +51,7 @@ export class OrdersPackBuilder{
         return this._expirationDate;
     }
 
-    get guid(): Guid{
+    get guid(): String{
         return this._guid;
     }
 

@@ -1,14 +1,23 @@
-import {Guid} from './Guid'
+import { prop, getModelForClass, buildSchema } from '@typegoose/typegoose';
 
 export class Entity{
 
-    public id: Guid;
+    @prop()
+    public id: String;
+    @prop()
     public createdAt: Date;
+    @prop()
     public updatedAt: Date;
 
-    constructor(id: Guid, createdAt: Date, updatedAt: Date) {
-        this.id = id;
+    constructor(id: String, createdAt: Date, updatedAt: Date) {
+        this.id = (id ? id : this.generateId());
         this.createdAt = (createdAt ? createdAt : new Date());
         this.updatedAt = (updatedAt ? updatedAt : this.createdAt);
      }
+
+     private generateId(): String{
+        return new Date().getTime().toString();
+     }
 }
+
+export const EntityModel = getModelForClass(Entity);

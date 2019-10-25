@@ -1,17 +1,16 @@
-import { Guid } from "../Entity/Guid";
 import { Order } from "./Order";
 
 export class OrderBuilder{
     private _description: String;
     private _price: number;
-    private _userGuid: Guid;
+    private _userGuid: String;
     private _payed: boolean;
     private _paymentMethod: PaymentMethod;
     private _createdAt: Date;
     private _updatedAt: Date;
-    private _guid: Guid;
+    private _guid: String;
 
-    constructor(description: String, price: number, userGuid: Guid){
+    constructor(description: String, price: number, userGuid: String){
         this._description = description;
         this._price = price;
         this._userGuid = userGuid;
@@ -32,7 +31,7 @@ export class OrderBuilder{
         return this;
     }
 
-    public setGuid(guid: Guid): OrderBuilder{
+    public setGuid(guid: String): OrderBuilder{
         this._guid = guid;
         return this;
     }
@@ -54,7 +53,7 @@ export class OrderBuilder{
         return this._price;
     }
 
-    get userGuid(): Guid{
+    get userGuid(): String{
         return this._userGuid;
     }
 
@@ -70,7 +69,7 @@ export class OrderBuilder{
         return this._updatedAt;
     }
 
-    get guid(): Guid{
+    get guid(): String{
         return this._guid;
     }
 

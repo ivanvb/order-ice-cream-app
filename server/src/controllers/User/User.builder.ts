@@ -1,5 +1,4 @@
 import {User} from './User';
-import {Guid} from '../Entity/Guid';
 import { Order } from '../Order/Order';
 import { OrdersPack } from '../OrdersPack/OrdersPack';
 
@@ -10,7 +9,7 @@ export class UserBuilder{
     private _password: String;
     private _orders: Order[];
     private _ordersPacks: OrdersPack[];
-    private _guid: Guid;
+    private _guid: String;
     private _createdAt: Date;
     private _updatedAt: Date;
 
@@ -30,7 +29,7 @@ export class UserBuilder{
         return this;
     }
 
-    public setGuid(guid: Guid): UserBuilder{
+    public setGuid(guid: String): UserBuilder{
         this._guid = guid;
         return this;
     }
@@ -69,7 +68,7 @@ export class UserBuilder{
         return this._ordersPacks;
     }
 
-    get guid(): Guid{
+    get guid(): String{
         return this._guid;
     }
 

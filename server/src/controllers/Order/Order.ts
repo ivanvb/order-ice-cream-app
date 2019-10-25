@@ -1,13 +1,18 @@
-import {OrderBuilder, PaymentMethod} from './Order.builder';
-import { Entity } from '../Entity/Entity';
-import { Guid } from '../Entity/Guid';
+import { prop, getModelForClass, addModelToTypegoose } from '@typegoose/typegoose';
+import { Entity, EntityModel } from '../Entity/Entity';
+import { OrderBuilder, PaymentMethod } from './Order.builder';
 
 export class Order extends Entity{
 
+    @prop()
     description: String;
-    userGuid: Guid;
+    @prop()
+    userGuid: String;
+    @prop()
     price: number;
+    @prop()
     payed: boolean;
+    @prop()
     paymentMethod: PaymentMethod;
 
     constructor(orderBuilder: OrderBuilder){
@@ -19,3 +24,6 @@ export class Order extends Entity{
         this.paymentMethod = (this.paymentMethod ? this.paymentMethod : PaymentMethod.EFECTIVO);
     }
 }
+
+
+export const OrderModel = getModelForClass(Order);

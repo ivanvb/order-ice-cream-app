@@ -2,11 +2,15 @@ import { User } from "../User/User";
 import { Order } from "../Order/Order";
 import { Entity } from "../Entity/Entity";
 import { OrdersPackBuilder } from "./OrdersPack.builder";
+import { prop, arrayProp, getModelForClass, Ref} from '@typegoose/typegoose';
 
 export class OrdersPack extends Entity{
 
-    orders: Order[];
-    creator: User;
+    @arrayProp({itemsRef: Order})
+    orders: Ref<Order[]>;
+    @prop({ref: User})
+    creator: Ref<User>;
+    @prop()
     expirationDate: Date;
 
     constructor(ordersPackBuilder: OrdersPackBuilder){
@@ -15,3 +19,5 @@ export class OrdersPack extends Entity{
         this.expirationDate =  ordersPackBuilder.expirationDate;
     }
 }
+
+export const OrdersPackModel = getModelForClass(OrdersPack)
