@@ -8,7 +8,7 @@ export class OrdersPack extends Entity{
 
     @arrayProp({itemsRef: Order})
     orders: Ref<Order[]>;
-    @prop({ref: User})
+    @prop({ref: "User"})
     creator: Ref<User>;
     @prop()
     expirationDate: Date;
