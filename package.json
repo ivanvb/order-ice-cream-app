@@ -9,6 +9,7 @@
   "author": "Ivan V",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.7.6",
     "tsc": "^1.20150623.0",

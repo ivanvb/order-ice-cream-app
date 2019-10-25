@@ -1,6 +1,7 @@
 import {Entity} from '../Entity/Entity';
 import { UserBuilder } from './User.builder';
 import { Order } from '../Order/Order';
+import { OrdersPack } from '../OrdersPack/OrdersPack';
 
 export class User extends Entity{
 
@@ -8,7 +9,7 @@ export class User extends Entity{
     password: String;
     email: String;
     orders: Order[];
-    ordersPacks;
+    ordersPacks: OrdersPack[];
 
     constructor(userBuilder: UserBuilder){
         super(userBuilder.guid, userBuilder.createdAt, userBuilder.updatedAt);
