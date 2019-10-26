@@ -33,7 +33,7 @@ export class UserRepository{
     public static async addOrder(user: User, order: Order): Promise<boolean>{
         const orders: Array<Ref<Order>> = user.orders as Array<Ref<Order>>;
         orders.push(order._id);
-        const updatedUser = await UserModel.updateOne({id: user.id}, {orders: orders});
+        const updatedUser = await UserModel.updateOne({id: user.id}, {orders: orders, updatedAt: new Date()});
 
         return !!updatedUser.n;
     }
@@ -41,7 +41,7 @@ export class UserRepository{
     public static async addOrdersPack(user: User, ordersPack: OrdersPack): Promise<boolean>{
         const ordersPacks: Array<Ref<OrdersPack>> = user.ordersPacks as Array<Ref<OrdersPack>>;
         ordersPacks.push(ordersPack._id);
-        const updatedUser = await UserModel.updateOne({id: user.id}, {ordersPacks: ordersPacks});
+        const updatedUser = await UserModel.updateOne({id: user.id}, {ordersPacks: ordersPacks, updatedAt: new Date()});
 
         return !!updatedUser.n;
     }

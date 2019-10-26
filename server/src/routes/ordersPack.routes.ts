@@ -10,7 +10,7 @@ class OrdersPackRoutes{
 
     private initializeRoutes(): void{
         this.router.post("/create", OrdersPackRoutesController.createOrdersPack);
-        // this.router.post("/signup", OrdersPackRoutes.signUp);
+        this.router.put("/update", OrdersPackRoutesController.updateOrdersPack);
     }
 }
 

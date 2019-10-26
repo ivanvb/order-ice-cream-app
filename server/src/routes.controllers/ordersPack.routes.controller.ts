@@ -7,7 +7,7 @@ import { OrdersPackRepository } from "../controllers/OrdersPack/OrdersPack.repos
 
 export class OrdersPackRoutesController{
 
-    public static async createOrdersPack(req: Request, res: Response){
+    public static async createOrdersPack(req: Request, res: Response): Promise<void>{
         const {userGuid, name, expirationDate} = req.body;
         const user: User = await UserRepository.findOne(userGuid);
 
@@ -16,5 +16,20 @@ export class OrdersPackRoutesController{
         const saved: boolean  = await UserRepository.addOrdersPack(user, savedOrdersPack);
 
         res.send({guid: ordersPack.id})
+    }
+
+    public static async updateOrdersPack(req: Request, res: Response): Promise<void>{
+        const {newExpirationDate, deleteArray, ordersPackId} = req.body;
+        
+        if(newExpirationDate){
+            console.log(newExpirationDate);
+            const newDate: Date =  new Date(Number(newExpirationDate));
+            OrdersPackRepository.addTime(newDate, ordersPackId);
+        }
+
+        if(deleteArray){
+            OrdersPackRepository.deleteOrders(deleteArray, ordersPackId);
+        }
+        res.sendStatus(200);
     }
 }

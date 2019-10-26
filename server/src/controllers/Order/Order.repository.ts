@@ -7,7 +7,7 @@ export class OrderRepository{
     }
 
     public static async findById(guid: String): Promise<Order>{
-        const order: Order = await OrderModel.findOne({guid: guid});
+        const order: Order = await OrderModel.findOne({id: guid});
         return order;
     }
 
@@ -17,7 +17,7 @@ export class OrderRepository{
     }
 
     public static async delete(guid: String): Promise<boolean>{
-        let deleted = await OrderModel.deleteOne({guid: guid});
+        let deleted = await OrderModel.deleteOne({id: guid});
         return !!deleted;
     }
 }
