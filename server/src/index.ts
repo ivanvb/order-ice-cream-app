@@ -4,10 +4,12 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import {userRoutes} from './routes/user.routes';
+import {ordersPackRoutes} from './routes/ordersPack.routes';
+import {orderRoutes} from './routes/order.routes';
 
 (async function main(){
 
-    await mongoose.connect("mongodb://localhost:27017/icecream", {useNewUrlParser: true});
+    await mongoose.connect("mongodb://localhost:27017/icecream", {useNewUrlParser: true, useUnifiedTopology: true});
 
     const app: express.Application = express();
 
@@ -20,5 +22,6 @@ import {userRoutes} from './routes/user.routes';
     app.listen(port);
 
     app.use('/user', userRoutes);
-
+    app.use('/ordersPack', ordersPackRoutes);
+    app.use('/order', orderRoutes);
 })();

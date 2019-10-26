@@ -1,4 +1,7 @@
 import {User, UserModel} from './User';
+import { Order } from '../Order/Order';
+import { Ref } from '@typegoose/typegoose';
+import { OrdersPack } from '../OrdersPack/OrdersPack';
 
 export class UserRepository{
 
@@ -8,7 +11,7 @@ export class UserRepository{
     }
 
     public static async findOne(guid: String): Promise<User>{
-        const user: User = await UserModel.findOne({guid: guid});
+        const user: User = await UserModel.findOne({id: guid});
         return user;
     }
 
@@ -18,7 +21,7 @@ export class UserRepository{
     }
 
     public static async delete(guid: String): Promise<boolean>{
-        const deleted =  await UserModel.deleteOne({guid: guid});
+        const deleted =  await UserModel.deleteOne({id: guid});
         return !!deleted;
     }
 
@@ -26,4 +29,20 @@ export class UserRepository{
         const user: User = await UserModel.findOne({email: email, password: password});
         return user;
     } 
+
+    public static async addOrder(user: User, order: Order): Promise<boolean>{
+        const orders: Array<Ref<Order>> = user.orders as Array<Ref<Order>>;
+        orders.push(order._id);
+        const updatedUser = await UserModel.updateOne({id: user.id}, {orders: orders});
+
+        return !!updatedUser.n;
+    }
+
+    public static async addOrdersPack(user: User, ordersPack: OrdersPack): Promise<boolean>{
+        const ordersPacks: Array<Ref<OrdersPack>> = user.ordersPacks as Array<Ref<OrdersPack>>;
+        ordersPacks.push(ordersPack._id);
+        const updatedUser = await UserModel.updateOne({id: user.id}, {ordersPacks: ordersPacks});
+
+        return !!updatedUser.n;
+    }
 }

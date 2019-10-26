@@ -6,6 +6,7 @@ import { prop, getModelForClass, Ref, arrayProp } from '@typegoose/typegoose';
 
 export class User extends Entity{
 
+    _id: Ref<User>
     @prop()
     name: String;
     @prop()

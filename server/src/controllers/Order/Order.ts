@@ -1,9 +1,10 @@
-import { prop, getModelForClass, addModelToTypegoose } from '@typegoose/typegoose';
-import { Entity, EntityModel } from '../Entity/Entity';
+import { prop, getModelForClass, addModelToTypegoose, Ref } from '@typegoose/typegoose';
+import { Entity } from '../Entity/Entity';
 import { OrderBuilder, PaymentMethod } from './Order.builder';
 
 export class Order extends Entity{
 
+    _id: Ref<Order>;
     @prop()
     description: String;
     @prop()

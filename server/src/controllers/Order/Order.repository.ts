@@ -11,9 +11,9 @@ export class OrderRepository{
         return order;
     }
 
-    public static async save(order: Order): Promise<boolean>{
+    public static async save(order: Order): Promise<Order>{
         let saved: Order = await OrderModel.create(order);
-        return !!saved;
+        return (saved ? saved : null);
     }
 
     public static async delete(guid: String): Promise<boolean>{

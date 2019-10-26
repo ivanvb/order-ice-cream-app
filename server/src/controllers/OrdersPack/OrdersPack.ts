@@ -6,8 +6,11 @@ import { prop, arrayProp, getModelForClass, Ref} from '@typegoose/typegoose';
 
 export class OrdersPack extends Entity{
 
+    _id: Ref<OrdersPack>
+    @prop()
+    name: String
     @arrayProp({itemsRef: Order})
-    orders: Ref<Order[]>;
+    orders: Ref<Order>[];
     @prop({ref: "User"})
     creator: Ref<User>;
     @prop()
@@ -17,6 +20,7 @@ export class OrdersPack extends Entity{
         super(ordersPackBuilder.guid, ordersPackBuilder.createdAt, ordersPackBuilder.updatedAt);
         this.creator = ordersPackBuilder.creator;
         this.expirationDate =  ordersPackBuilder.expirationDate;
+        this.name = ordersPackBuilder.name;
     }
 }
 

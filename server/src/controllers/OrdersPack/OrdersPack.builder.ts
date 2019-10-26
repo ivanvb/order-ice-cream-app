@@ -9,10 +9,12 @@ export class OrdersPackBuilder{
     private _guid: String;
     private _createdAt: Date;
     private _updatedAt: Date;
+    private _name: String;
 
-    constructor(creator: User, expirationDate: Date){
+    constructor(creator: User, expirationDate: Date, name: String){
         this._creator = creator;
         this._expirationDate =  expirationDate;
+        this._name = name;
     }
 
     public setOrders(orders: Order[]): OrdersPackBuilder{
@@ -61,5 +63,9 @@ export class OrdersPackBuilder{
 
     get updatedAt(): Date{
         return this._updatedAt;
+    }
+
+    get name(): String{
+        return this._name;
     }
 }
