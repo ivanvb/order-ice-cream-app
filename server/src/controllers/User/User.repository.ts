@@ -46,21 +46,21 @@ export class UserRepository{
         return !!updatedUser.n;
     }
 
-    public static async deleteOrderFromUser(guid: String, orderId: Ref<Order>): Promise<boolean>{
+    public static async deleteOrderFromUser(guid: String, orderDBId: Ref<Order>): Promise<boolean>{
         const user: User = await UserRepository.findOne(guid);
         const orders: Order[] =  user.orders as Array<Order>;
 
-        orders.splice(orders.findIndex(order => order._id != orderId), 1);
+        orders.splice(orders.findIndex(order => order._id != orderDBId), 1);
 
         const updated = await UserModel.updateOne({id: guid}, {orders: orders, updatedAt: new Date()});
         return !!updated.n;
     }
 
-    public static async deleteOrdersPackFromUser(guid: String, ordersPackId: Ref<OrdersPack>){
+    public static async deleteOrdersPackFromUser(guid: String, ordersPackDBId: Ref<OrdersPack>){
         const user: User = await UserRepository.findOne(guid);
         const ordersPacks: OrdersPack[] =  user.ordersPacks as Array<OrdersPack>;
 
-        ordersPacks.splice(ordersPacks.findIndex(ordersPack => ordersPack._id != ordersPackId), 1);
+        ordersPacks.splice(ordersPacks.findIndex(ordersPack => ordersPack._id != ordersPackDBId), 1);
 
         const updated = await UserModel.updateOne({id: guid}, {ordersPacks: ordersPacks, updatedAt: new Date()});
         return !!updated.n;

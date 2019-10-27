@@ -21,25 +21,25 @@ export class OrdersPackRoutesController{
     }
 
     public static async updateOrdersPack(req: Request, res: Response): Promise<void>{
-        const {newExpirationDate, deleteArray, ordersPackId} = req.body;
+        const {newExpirationDate, deleteArray, ordersPackDBId} = req.body;
         
         if(newExpirationDate){
             const newDate: Date =  new Date(Number(newExpirationDate));
-            OrdersPackRepository.addTime(newDate, ordersPackId);
+            OrdersPackRepository.addTime(newDate, ordersPackDBId);
         }
 
         if(deleteArray){
-            OrdersPackRepository.deleteOrders(deleteArray, ordersPackId);
+            OrdersPackRepository.deleteOrders(deleteArray, ordersPackDBId);
         }
         res.sendStatus(200);
     }
 
     public static async deleteOrdersPack(req: Request, res: Response): Promise<void>{
-        const {ordersPackId, userId} = req.body;
-        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPackId);
+        const {ordersPackGuid, userId: userDBId} = req.body;
+        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPackGuid);
         const creator: User = ordersPack.creator as User;
-        if(creator && ordersPack && creator._id == userId){
-            await OrdersPackRepository.delete(ordersPackId);
+        if(creator && ordersPack && creator._id == userDBId){
+            await OrdersPackRepository.delete(ordersPackGuid);
 
             const orders: Order[] = ordersPack.orders as Order[];
             for(let order of orders){

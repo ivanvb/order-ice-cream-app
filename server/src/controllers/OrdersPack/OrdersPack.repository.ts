@@ -25,24 +25,24 @@ export class OrdersPackRepository{
         return !!deleted;
     }
 
-    public static async addOrder(order: Order, ordersPackId: String): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackId);
+    public static async addOrder(order: Order, ordersPackGuid: String): Promise<boolean>{
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackGuid);
         const orders: Array<Ref<Order>> =  ordersPack.orders;
 
         if(!orders.includes(order._id)){
             orders.push(order._id);
-            await OrdersPackModel.updateOne({id: ordersPackId}, {orders: orders, updatedAt: new Date()});
+            await OrdersPackModel.updateOne({id: ordersPackGuid}, {orders: orders, updatedAt: new Date()});
         }
         return null;
     }
 
-    public static async addTime(newDate: Date, ordersPackId: String): Promise<boolean>{
-        const updated = await OrdersPackModel.updateOne({id: ordersPackId}, {expirationDate: newDate, updatedAt: new Date()});
+    public static async addTime(newDate: Date, ordersPackGuid: String): Promise<boolean>{
+        const updated = await OrdersPackModel.updateOne({id: ordersPackGuid}, {expirationDate: newDate, updatedAt: new Date()});
         return !!updated.n;
     }
 
-    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPackId: String): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackId);
+    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPackGuid: String): Promise<boolean>{
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackGuid);
         const orders: Array<Order> = ordersPack.orders as Array<Order>;
         
         for(let orderToDelete of ordersToDelete){
@@ -55,7 +55,7 @@ export class OrdersPackRepository{
             }), 1);
         }
 
-        const updated = await OrdersPackModel.updateOne({id: ordersPackId}, {orders: orders, updatedAt: new Date()});
+        const updated = await OrdersPackModel.updateOne({id: ordersPackGuid}, {orders: orders, updatedAt: new Date()});
         return !!updated;
     }
 }

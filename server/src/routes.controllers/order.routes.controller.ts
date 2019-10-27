@@ -10,18 +10,18 @@ import { OrdersPack } from "../controllers/OrdersPack/OrdersPack";
 export class OrderRoutesController{
 
     public static async createOrder(req: Request, res: Response){
-        const {ordersPackId, description, price, userId, paymentMethod, payed} =  req.body;
-        const user: User = await UserRepository.findOne(userId);
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackId);
+        const {ordersPackGuid, description, price, userGuid, paymentMethod, payed} =  req.body;
+        const user: User = await UserRepository.findOne(userGuid);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackGuid);
 
-        const order: Order = new OrderBuilder(description, price, userId)
+        const order: Order = new OrderBuilder(description, price, userGuid)
                                               .setPaymentMethod(paymentMethod)
                                               .setPayed(payed)
                                               .build();
         
-        if(OrderRoutesController.canPlaceOrder(user, ordersPack, userId)){
+        if(OrderRoutesController.canPlaceOrder(user, ordersPack, userGuid)){
             const savedOrder: Order = await OrderRepository.save(order);
-            await OrdersPackRepository.addOrder(savedOrder, ordersPackId);
+            await OrdersPackRepository.addOrder(savedOrder, ordersPackGuid);
             await UserRepository.addOrder(user, savedOrder);
 
             res.sendStatus(200);
@@ -30,11 +30,11 @@ export class OrderRoutesController{
         }
     }
 
-    private static canPlaceOrder(user: User, ordersPack: OrdersPack, userId: String): boolean{
+    private static canPlaceOrder(user: User, ordersPack: OrdersPack, userGuid: String): boolean{
         return ( 
             user &&
             ordersPack &&
-            !OrderRoutesController.hasPlacedOrder(userId, ordersPack));
+            !OrderRoutesController.hasPlacedOrder(userGuid, ordersPack));
     }
 
     private static hasPlacedOrder(userGuid: String, ordersPack: OrdersPack): boolean{
