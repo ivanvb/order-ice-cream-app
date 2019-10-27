@@ -47,4 +47,26 @@ export class OrderRoutesController{
 
         return false;
     }
+
+    public static async editOrder(req: Request, res: Response):Promise<void>{
+        const {orderDBId, orderGuid, description, payed, price, paymentMethod, userGuid} =  req.body;
+        const ordersPack: OrdersPack = await OrdersPackRepository.findByOrdersDBId(orderDBId);
+        const order: Order = await OrderRepository.findById(orderGuid);
+
+        if(OrderRoutesController.canEditOrder(order, ordersPack, userGuid)){
+            const updated = await OrderRepository.editOrderInformation(order, description, paymentMethod, payed, price);
+            res.sendStatus(200);
+            return;
+        }
+        res.sendStatus(400);
+    }
+
+    private static canEditOrder(order: Order, ordersPack: OrdersPack, userGuid: String): boolean{
+        return(
+            ordersPack &&
+            ordersPack.expirationDate > new Date() &&
+            order &&
+            order.userGuid == userGuid
+        );
+    }
 }

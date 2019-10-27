@@ -10,7 +10,7 @@ class OrderRoutes{
 
     private initializeRoutes(): void{
         this.router.post("/create", OrderRoutesController.createOrder);
-        // this.router.post("/signup", OrdersPackRoutes.signUp);
+        this.router.put("/edit", OrderRoutesController.editOrder);
     }
 }
 

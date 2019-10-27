@@ -58,4 +58,9 @@ export class OrdersPackRepository{
         const updated = await OrdersPackModel.updateOne({id: ordersPackGuid}, {orders: orders, updatedAt: new Date()});
         return !!updated;
     }
+
+    public static async findByOrdersDBId(ordersDBId: Ref<Order>): Promise<OrdersPack>{
+        const ordersPack: OrdersPack =  await OrdersPackModel.findOne({orders: [ordersDBId]});
+        return ordersPack;
+    }
 }

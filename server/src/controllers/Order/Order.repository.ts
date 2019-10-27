@@ -20,4 +20,16 @@ export class OrderRepository{
         let deleted = await OrderModel.deleteOne({id: guid});
         return !!deleted;
     }
+
+    public static async editOrderInformation(order: Order, description: String, paymentMethod: number, payed: boolean, price: number): Promise<boolean>{
+        const updated = await OrderModel.updateOne({id: order.id}, {
+            description: description,
+            paymentMethod: paymentMethod,
+            payed: payed,
+            price: price,
+            updatedAt: new Date()
+        });
+
+        return !!updated.n;
+    }
 }
