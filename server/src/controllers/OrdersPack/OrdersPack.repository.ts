@@ -11,7 +11,7 @@ export class OrdersPackRepository{
     }
 
     public static async findOne(guid: String): Promise<OrdersPack>{
-        const ordersPack: OrdersPack = await OrdersPackModel.findOne({id: guid}).populate('orders');
+        const ordersPack: OrdersPack = await OrdersPackModel.findOne({id: guid}).populate('orders').populate('creator');
         return ordersPack;
     }
 
@@ -21,7 +21,7 @@ export class OrdersPackRepository{
     }
 
     public static async delete(guid: String): Promise<boolean>{
-        const deleted =  await OrdersPackModel.deleteOne({guid: guid});
+        const deleted =  await OrdersPackModel.deleteOne({id: guid});
         return !!deleted;
     }
 
@@ -49,17 +49,13 @@ export class OrdersPackRepository{
             orders.splice(orders.findIndex(order => {
                 if(order._id == orderToDelete){
                     OrderRepository.delete(order.id);
-                    console.log("deleted");
                     return false;
                 }
-                console.log(order._id, orderToDelete)
                 return true;
             }), 1);
         }
 
-        console.log(orders.length);
         const updated = await OrdersPackModel.updateOne({id: ordersPackId}, {orders: orders, updatedAt: new Date()});
-        console.log(updated)
         return !!updated;
     }
 }
