@@ -6,6 +6,7 @@ import { Order } from "../controllers/Order/Order";
 import { OrderBuilder } from "../controllers/Order/Order.builder";
 import { OrderRepository } from "../controllers/Order/Order.repository";
 import { OrdersPack } from "../controllers/OrdersPack/OrdersPack";
+import { Ref } from "@typegoose/typegoose";
 
 export class OrderRoutesController{
 
@@ -30,14 +31,14 @@ export class OrderRoutesController{
         }
     }
 
-    private static canPlaceOrder(user: User, ordersPack: OrdersPack, user_id: String): boolean{
+    private static canPlaceOrder(user: User, ordersPack: OrdersPack, user_id: Ref<User>): boolean{
         return ( 
             user &&
             ordersPack &&
             !OrderRoutesController.hasPlacedOrder(user_id, ordersPack));
     }
 
-    private static hasPlacedOrder(user_id: String, ordersPack: OrdersPack): boolean{
+    private static hasPlacedOrder(user_id: Ref<User>, ordersPack: OrdersPack): boolean{
         for(let orderRef of ordersPack.orders){
             let order: Order = orderRef as Order;
             if(order.user_id === user_id){
@@ -61,7 +62,7 @@ export class OrderRoutesController{
         res.sendStatus(400);
     }
 
-    private static canEditOrder(order: Order, ordersPack: OrdersPack, user_id: String): boolean{
+    private static canEditOrder(order: Order, ordersPack: OrdersPack, user_id: Ref<User>): boolean{
         return(
             ordersPack &&
             ordersPack.expirationDate > new Date() &&

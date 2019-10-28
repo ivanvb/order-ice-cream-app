@@ -1,13 +1,14 @@
 import { prop, getModelForClass, addModelToTypegoose, Ref } from '@typegoose/typegoose';
 import { Entity } from '../Entity/Entity';
 import { OrderBuilder, PaymentMethod } from './Order.builder';
+import { User } from '../User/User';
 
 export class Order extends Entity{
 
     @prop()
     description: String;
-    @prop()
-    user_id: String;
+    @prop({ref: "User"})
+    user_id: Ref<User>;
     @prop()
     price: number;
     @prop()

@@ -1,15 +1,17 @@
 import { Order } from "./Order";
+import { Ref } from "@typegoose/typegoose";
+import { User } from "../User/User";
 
 export class OrderBuilder{
     private _description: String;
     private _price: number;
-    private _userId: String;
+    private _userId: Ref<User>;
     private _payed: boolean;
     private _paymentMethod: PaymentMethod;
     private _createdAt: Date;
     private _updatedAt: Date;
 
-    constructor(description: String, price: number, user_id: String){
+    constructor(description: String, price: number, user_id: Ref<User>){
         this._description = description;
         this._price = price;
         this._userId = user_id;
@@ -47,7 +49,7 @@ export class OrderBuilder{
         return this._price;
     }
 
-    get user_id(): String{
+    get user_id(): Ref<User>{
         return this._userId;
     }
 
