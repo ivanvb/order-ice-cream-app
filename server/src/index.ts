@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
@@ -9,7 +10,8 @@ import {orderRoutes} from './routes/order.routes';
 
 (async function main(){
 
-    await mongoose.connect("mongodb://localhost:27017/icecream", {useNewUrlParser: true, useUnifiedTopology: true});
+    dotenv.config();
+    await mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
     const app: express.Application = express();
 
