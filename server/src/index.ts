@@ -9,13 +9,13 @@ import {ordersPackRoutes} from './routes/ordersPack.routes';
 import {orderRoutes} from './routes/order.routes';
 import { OrdersPack } from "./controllers/OrdersPack/OrdersPack";
 import { OrdersPackRepository } from "./controllers/OrdersPack/OrdersPack.repository";
+import { Order } from "./controllers/Order/Order";
+import { Ref } from "@typegoose/typegoose";
 
 (async function main(){
 
     dotenv.config();
     await mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-    const op: OrdersPack = await OrdersPackRepository.findOne('5db7486d197f733b6898b7ef');
-    console.log(op);
 
     const app: express.Application = express();
 

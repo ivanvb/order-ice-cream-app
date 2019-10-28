@@ -64,12 +64,11 @@ export class OrdersPackRepository{
         let orders: Order[] =  ordersPack.orders as Order[];
         
         orders.splice(orders.findIndex(order =>{
-            return order._id === ordersPack_id
+            return order._id === order_id
         }), 1);
 
-        const orders2 = [...orders];
-        const updated = await OrdersPackModel.updateOne({_id: order_id}, {orders: orders, updatedAt: new Date()});
-        console.log(updated);
+
+        const updated = await OrdersPackModel.updateOne({_id: ordersPack_id}, {orders: orders, updatedAt: new Date()});
         return !!updated.n;
     }
 
