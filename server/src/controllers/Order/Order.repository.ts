@@ -1,4 +1,5 @@
 import { Order, OrderModel } from "./Order";
+import { Ref } from "@typegoose/typegoose";
 
 export class OrderRepository{
     public static async find(): Promise<Order[]>{
@@ -6,8 +7,8 @@ export class OrderRepository{
         return orders;
     }
 
-    public static async findById(guid: String): Promise<Order>{
-        const order: Order = await OrderModel.findOne({id: guid});
+    public static async findById(_id: String|Ref<Order>): Promise<Order>{
+        const order: Order = await OrderModel.findOne({_id: _id});
         return order;
     }
 
@@ -16,13 +17,13 @@ export class OrderRepository{
         return (saved ? saved : null);
     }
 
-    public static async delete(guid: String): Promise<boolean>{
-        let deleted = await OrderModel.deleteOne({id: guid});
+    public static async delete(_id: String|Ref<Order>): Promise<boolean>{
+        let deleted = await OrderModel.deleteOne({_id: _id});
         return !!deleted;
     }
 
     public static async editOrderInformation(order: Order, description: String, paymentMethod: number, payed: boolean, price: number): Promise<boolean>{
-        const updated = await OrderModel.updateOne({id: order.id}, {
+        const updated = await OrderModel.updateOne({_id: order._id}, {
             description: description,
             paymentMethod: paymentMethod,
             payed: payed,

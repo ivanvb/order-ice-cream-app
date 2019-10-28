@@ -6,7 +6,6 @@ import { prop, getModelForClass, Ref, arrayProp } from '@typegoose/typegoose';
 
 export class User extends Entity{
 
-    _id: Ref<User>
     @prop()
     name: String;
     @prop()
@@ -19,7 +18,7 @@ export class User extends Entity{
     ordersPacks: Ref<OrdersPack[]>;
 
     constructor(userBuilder: UserBuilder){
-        super(userBuilder.guid, userBuilder.createdAt, userBuilder.updatedAt);
+        super(userBuilder.createdAt, userBuilder.updatedAt);
         this.name =  userBuilder.name;
         this.password =  userBuilder.password;
         this.email =  userBuilder.email;

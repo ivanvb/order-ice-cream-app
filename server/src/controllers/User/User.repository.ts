@@ -10,18 +10,18 @@ export class UserRepository{
         return users;
     }
 
-    public static async findOne(guid: String): Promise<User>{
-        const user: User = await UserModel.findOne({id: guid});
+    public static async findOne(_id: String|Ref<User>): Promise<User>{
+        const user: User = await UserModel.findOne({_id: _id});
         return user;
     }
 
-    public static async save(user: User): Promise<String>{
+    public static async save(user: User): Promise<Ref<User>>{
         const saved: User = await UserModel.create(user);
-        return (saved ? saved.id : null);
+        return (saved ? saved._id : null);
     }
 
-    public static async delete(guid: String): Promise<boolean>{
-        const deleted =  await UserModel.deleteOne({id: guid});
+    public static async delete(_id: String|Ref<User>): Promise<boolean>{
+        const deleted =  await UserModel.deleteOne({_id: _id});
         return !!deleted;
     }
 
@@ -33,7 +33,7 @@ export class UserRepository{
     public static async addOrder(user: User, order: Order): Promise<boolean>{
         const orders: Array<Ref<Order>> = user.orders as Array<Ref<Order>>;
         orders.push(order._id);
-        const updatedUser = await UserModel.updateOne({id: user.id}, {orders: orders, updatedAt: new Date()});
+        const updatedUser = await UserModel.updateOne({_id: user._id}, {orders: orders, updatedAt: new Date()});
 
         return !!updatedUser.n;
     }
@@ -41,28 +41,28 @@ export class UserRepository{
     public static async addOrdersPack(user: User, ordersPack: OrdersPack): Promise<boolean>{
         const ordersPacks: Array<Ref<OrdersPack>> = user.ordersPacks as Array<Ref<OrdersPack>>;
         ordersPacks.push(ordersPack._id);
-        const updatedUser = await UserModel.updateOne({id: user.id}, {ordersPacks: ordersPacks, updatedAt: new Date()});
+        const updatedUser = await UserModel.updateOne({_id: user._id}, {ordersPacks: ordersPacks, updatedAt: new Date()});
 
         return !!updatedUser.n;
     }
 
-    public static async deleteOrderFromUser(guid: String, orderDBId: Ref<Order>): Promise<boolean>{
-        const user: User = await UserRepository.findOne(guid);
+    public static async deleteOrderFromUser(user_id: String|Ref<User>, order_id: Ref<Order>): Promise<boolean>{
+        const user: User = await UserRepository.findOne(user_id);
         const orders: Order[] =  user.orders as Array<Order>;
 
-        orders.splice(orders.findIndex(order => order._id != orderDBId), 1);
+        orders.splice(orders.findIndex(order => order._id != order_id), 1);
 
-        const updated = await UserModel.updateOne({id: guid}, {orders: orders, updatedAt: new Date()});
+        const updated = await UserModel.updateOne({_id: user_id}, {orders: orders, updatedAt: new Date()});
         return !!updated.n;
     }
 
-    public static async deleteOrdersPackFromUser(guid: String, ordersPackDBId: Ref<OrdersPack>){
-        const user: User = await UserRepository.findOne(guid);
+    public static async deleteOrdersPackFromUser(user_id: String|Ref<User>, ordersPack_id: Ref<OrdersPack>){
+        const user: User = await UserRepository.findOne(user_id);
         const ordersPacks: OrdersPack[] =  user.ordersPacks as Array<OrdersPack>;
 
-        ordersPacks.splice(ordersPacks.findIndex(ordersPack => ordersPack._id != ordersPackDBId), 1);
+        ordersPacks.splice(ordersPacks.findIndex(ordersPack => ordersPack._id != ordersPack_id), 1);
 
-        const updated = await UserModel.updateOne({id: guid}, {ordersPacks: ordersPacks, updatedAt: new Date()});
+        const updated = await UserModel.updateOne({_id: user_id}, {ordersPacks: ordersPacks, updatedAt: new Date()});
         return !!updated.n;
     }
 }

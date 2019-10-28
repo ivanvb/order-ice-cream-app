@@ -6,7 +6,6 @@ export class OrdersPackBuilder{
     private _creator: User;
     private _orders: Order[];
     private _expirationDate: Date;
-    private _guid: String;
     private _createdAt: Date;
     private _updatedAt: Date;
     private _name: String;
@@ -19,11 +18,6 @@ export class OrdersPackBuilder{
 
     public setOrders(orders: Order[]): OrdersPackBuilder{
         this._orders =  orders;
-        return this;
-    }
-
-    public setGuid(guid: String): OrdersPackBuilder{
-        this._guid =  guid;
         return this;
     }
 
@@ -51,10 +45,6 @@ export class OrdersPackBuilder{
 
     get expirationDate(): Date{
         return this._expirationDate;
-    }
-
-    get guid(): String{
-        return this._guid;
     }
 
     get createdAt(): Date{

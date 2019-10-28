@@ -3,17 +3,16 @@ import { Order } from "./Order";
 export class OrderBuilder{
     private _description: String;
     private _price: number;
-    private _userGuid: String;
+    private _userId: String;
     private _payed: boolean;
     private _paymentMethod: PaymentMethod;
     private _createdAt: Date;
     private _updatedAt: Date;
-    private _guid: String;
 
-    constructor(description: String, price: number, userGuid: String){
+    constructor(description: String, price: number, user_id: String){
         this._description = description;
         this._price = price;
-        this._userGuid = userGuid;
+        this._userId = user_id;
     }
 
     public setPayed(payed: boolean): OrderBuilder{
@@ -28,11 +27,6 @@ export class OrderBuilder{
 
     public setUpdateDate(updatedAt: Date): OrderBuilder {
         this._updatedAt = updatedAt;
-        return this;
-    }
-
-    public setGuid(guid: String): OrderBuilder{
-        this._guid = guid;
         return this;
     }
 
@@ -53,8 +47,8 @@ export class OrderBuilder{
         return this._price;
     }
 
-    get userGuid(): String{
-        return this._userGuid;
+    get user_id(): String{
+        return this._userId;
     }
 
     get payed(): boolean{
@@ -67,10 +61,6 @@ export class OrderBuilder{
 
     get updatedAt(): Date{
         return this._updatedAt;
-    }
-
-    get guid(): String{
-        return this._guid;
     }
 
     get paymentMethod(): PaymentMethod{

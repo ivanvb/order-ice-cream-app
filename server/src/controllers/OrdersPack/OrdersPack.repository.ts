@@ -10,8 +10,8 @@ export class OrdersPackRepository{
         return ordersPack;
     }
 
-    public static async findOne(guid: String): Promise<OrdersPack>{
-        const ordersPack: OrdersPack = await OrdersPackModel.findOne({id: guid}).populate('orders').populate('creator');
+    public static async findOne(_id: String|Ref<OrdersPack>): Promise<OrdersPack>{
+        const ordersPack: OrdersPack = await OrdersPackModel.findOne({_id: _id}).populate('orders').populate('creator');
         return ordersPack;
     }
 
@@ -20,42 +20,42 @@ export class OrdersPackRepository{
         return (saved ? saved : null);
     }
 
-    public static async delete(guid: String): Promise<boolean>{
-        const deleted =  await OrdersPackModel.deleteOne({id: guid});
+    public static async delete(_id: String|Ref<OrdersPack>): Promise<boolean>{
+        const deleted =  await OrdersPackModel.deleteOne({_id: _id});
         return !!deleted;
     }
 
-    public static async addOrder(order: Order, ordersPackGuid: String): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackGuid);
+    public static async addOrder(order: Order, ordersPack_id: String): Promise<boolean>{
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
         const orders: Array<Ref<Order>> =  ordersPack.orders;
 
         if(!orders.includes(order._id)){
             orders.push(order._id);
-            await OrdersPackModel.updateOne({id: ordersPackGuid}, {orders: orders, updatedAt: new Date()});
+            await OrdersPackModel.updateOne({_id: ordersPack_id}, {orders: orders, updatedAt: new Date()});
         }
         return null;
     }
 
-    public static async addTime(newDate: Date, ordersPackGuid: String): Promise<boolean>{
-        const updated = await OrdersPackModel.updateOne({id: ordersPackGuid}, {expirationDate: newDate, updatedAt: new Date()});
+    public static async addTime(newDate: Date, ordersPack_id: String): Promise<boolean>{
+        const updated = await OrdersPackModel.updateOne({_id: ordersPack_id}, {expirationDate: newDate, updatedAt: new Date()});
         return !!updated.n;
     }
 
-    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPackGuid: String): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPackGuid);
+    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPack_id: String): Promise<boolean>{
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
         const orders: Array<Order> = ordersPack.orders as Array<Order>;
         
         for(let orderToDelete of ordersToDelete){
             orders.splice(orders.findIndex(order => {
                 if(order._id == orderToDelete){
-                    OrderRepository.delete(order.id);
+                    OrderRepository.delete(order._id);
                     return false;
                 }
                 return true;
             }), 1);
         }
 
-        const updated = await OrdersPackModel.updateOne({id: ordersPackGuid}, {orders: orders, updatedAt: new Date()});
+        const updated = await OrdersPackModel.updateOne({_id: ordersPack_id}, {orders: orders, updatedAt: new Date()});
         return !!updated;
     }
 

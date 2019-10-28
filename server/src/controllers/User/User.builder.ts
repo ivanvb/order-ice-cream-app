@@ -9,7 +9,6 @@ export class UserBuilder{
     private _password: String;
     private _orders: Order[];
     private _ordersPacks: OrdersPack[];
-    private _guid: String;
     private _createdAt: Date;
     private _updatedAt: Date;
 
@@ -26,11 +25,6 @@ export class UserBuilder{
 
     public setOrdersPacks(ordersPacks: OrdersPack[]): UserBuilder{
         this._ordersPacks = ordersPacks;
-        return this;
-    }
-
-    public setGuid(guid: String): UserBuilder{
-        this._guid = guid;
         return this;
     }
 
@@ -67,11 +61,7 @@ export class UserBuilder{
     get ordersPacks(): OrdersPack[]{
         return this._ordersPacks;
     }
-
-    get guid(): String{
-        return this._guid;
-    }
-
+    
     get createdAt(): Date{
         return this._createdAt;
     }

@@ -4,11 +4,10 @@ import { OrderBuilder, PaymentMethod } from './Order.builder';
 
 export class Order extends Entity{
 
-    _id: Ref<Order>;
     @prop()
     description: String;
     @prop()
-    userGuid: String;
+    user_id: String;
     @prop()
     price: number;
     @prop()
@@ -17,9 +16,9 @@ export class Order extends Entity{
     paymentMethod: PaymentMethod;
 
     constructor(orderBuilder: OrderBuilder){
-        super(orderBuilder.guid, orderBuilder.createdAt, orderBuilder.updatedAt);
+        super(orderBuilder.createdAt, orderBuilder.updatedAt);
         this.description =  orderBuilder.description;
-        this.userGuid = orderBuilder.userGuid;
+        this.user_id = orderBuilder.user_id;
         this.price =  orderBuilder.price;
         this.payed =  (orderBuilder.payed ? orderBuilder.payed : false);
         this.paymentMethod = (this.paymentMethod ? this.paymentMethod : PaymentMethod.EFECTIVO);
