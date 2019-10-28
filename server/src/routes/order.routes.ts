@@ -11,6 +11,7 @@ class OrderRoutes{
     private initializeRoutes(): void{
         this.router.post("/create", OrderRoutesController.createOrder);
         this.router.put("/edit", OrderRoutesController.editOrder);
+        this.router.delete("/", OrderRoutesController.deleteOrder)
     }
 }
 

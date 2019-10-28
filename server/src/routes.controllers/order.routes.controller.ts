@@ -41,7 +41,7 @@ export class OrderRoutesController{
     private static hasPlacedOrder(user_id: Ref<User>, ordersPack: OrdersPack): boolean{
         for(let orderRef of ordersPack.orders){
             let order: Order = orderRef as Order;
-            if(order.user_id === user_id){
+            if(order.user_id == user_id){
                 return true;
             }
         }
@@ -50,8 +50,8 @@ export class OrderRoutesController{
     }
 
     public static async editOrder(req: Request, res: Response):Promise<void>{
-        const {order_id, description, payed, price, paymentMethod, user_id} =  req.body;
-        const ordersPack: OrdersPack = await OrdersPackRepository.findByOrdersDBId(order_id);
+        const {order_id, ordersPack_id, description, payed, price, paymentMethod, user_id} =  req.body;
+        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
         const order: Order = await OrderRepository.findById(order_id);
 
         if(OrderRoutesController.canEditOrder(order, ordersPack, user_id)){
@@ -69,5 +69,20 @@ export class OrderRoutesController{
             order &&
             order.user_id == user_id
         );
+    }
+
+    public static async deleteOrder(req: Request, res: Response): Promise<void>{
+        const {order_id, ordersPack_id, user_id} = req.body;
+        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
+        const order: Order = await OrderRepository.findById(order_id);
+
+        if(OrderRoutesController.canEditOrder(order, ordersPack, user_id)){
+            UserRepository.deleteOrderFromUser(user_id, order_id);
+            OrdersPackRepository.deleteOrder(order_id, ordersPack_id);
+            OrderRepository.delete(order_id);
+            res.sendStatus(200);
+            return;
+        }
+        res.sendStatus(400);
     }
 }

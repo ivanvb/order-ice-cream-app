@@ -1,5 +1,5 @@
 import {OrdersPack, OrdersPackModel} from './OrdersPack';
-import { Order } from '../Order/Order';
+import { Order} from '../Order/Order';
 import { Ref } from '@typegoose/typegoose';
 import { OrderRepository } from '../Order/Order.repository';
 
@@ -56,11 +56,25 @@ export class OrdersPackRepository{
         }
 
         const updated = await OrdersPackModel.updateOne({_id: ordersPack_id}, {orders: orders, updatedAt: new Date()});
-        return !!updated;
+        return !!updated.n;
     }
 
-    public static async findByOrdersDBId(ordersDBId: Ref<Order>): Promise<OrdersPack>{
-        const ordersPack: OrdersPack =  await OrdersPackModel.findOne({orders: [ordersDBId]});
+    public static async deleteOrder(order_id: Ref<Order>, ordersPack_id: Ref<OrdersPack>){
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        let orders: Order[] =  ordersPack.orders as Order[];
+        
+        orders.splice(orders.findIndex(order =>{
+            return order._id === ordersPack_id
+        }), 1);
+
+        const orders2 = [...orders];
+        const updated = await OrdersPackModel.updateOne({_id: order_id}, {orders: orders, updatedAt: new Date()});
+        console.log(updated);
+        return !!updated.n;
+    }
+
+    public static async findByOrderId(order_id: Ref<Order>): Promise<OrdersPack>{
+        const ordersPack: OrdersPack = await OrdersPackModel.findOne({orders: [order_id]});
         return ordersPack;
     }
 }
