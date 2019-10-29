@@ -7,13 +7,13 @@ import dotenv from 'dotenv';
 import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
 import {orderRoutes} from './routes/order.routes';
-import { OrdersPack } from "./controllers/OrdersPack/OrdersPack";
-import { OrdersPackRepository } from "./controllers/OrdersPack/OrdersPack.repository";
-import { Order } from "./controllers/Order/Order";
-import { Ref } from "@typegoose/typegoose";
 
+/**
+ * Punto de entrada de la aplicación.
+ */
 (async function main(){
 
+    ///Se carga la configuración provista en el archivo .env
     dotenv.config();
     await mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 

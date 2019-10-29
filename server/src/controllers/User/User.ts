@@ -4,6 +4,12 @@ import { Order } from '../Order/Order';
 import { OrdersPack } from '../OrdersPack/OrdersPack';
 import { prop, getModelForClass, Ref, arrayProp } from '@typegoose/typegoose';
 
+/**
+ * Clase representativa de un User.
+ * 
+ * Las propiedades tienen los decoradores '@prop' y '@arrayProp' para modelar
+ * esta clase como un documento dentro de MongoDB.
+ */
 export class User extends Entity{
 
     @prop()
@@ -27,4 +33,5 @@ export class User extends Entity{
     }
 }
 
+///Exporta el modelo de la clase el cual será utilizado para realizar operaciones con relación a la base de datos.
 export const UserModel = getModelForClass(User);

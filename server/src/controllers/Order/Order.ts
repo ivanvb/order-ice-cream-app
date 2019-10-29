@@ -1,12 +1,19 @@
-import { prop, getModelForClass, addModelToTypegoose, Ref } from '@typegoose/typegoose';
+import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
 import { Entity } from '../Entity/Entity';
 import { OrderBuilder, PaymentMethod } from './Order.builder';
 import { User } from '../User/User';
 
+/**
+ * Clase representativa de una Orden.
+ * 
+ * Las propiedades tienen los decoradores '@prop' para modelar
+ * esta clase como un documento dentro de MongoDB.
+ */
 export class Order extends Entity{
 
     @prop()
     description: String;
+    ///Referencia al User que creo esta Orden.
     @prop({ref: "User"})
     user_id: Ref<User>;
     @prop()
@@ -26,5 +33,5 @@ export class Order extends Entity{
     }
 }
 
-
+///Exporta el modelo de la clase el cual será utilizado para realizar operaciones con relación a la base de datos.
 export const OrderModel = getModelForClass(Order);

@@ -10,6 +10,11 @@ import { Ref } from "@typegoose/typegoose";
 
 export class OrderRoutesController{
 
+    /**
+     * Crea una Orden dentro de un OrdersPack especificado para un Usuario especificado.
+     * @param req Request
+     * @param res Response
+     */
     public static async createOrder(req: Request, res: Response){
         const {ordersPack_id, description, price, user_id, paymentMethod, payed} =  req.body;
         const user: User = await UserRepository.findOne(user_id);
@@ -31,6 +36,12 @@ export class OrderRoutesController{
         }
     }
 
+    /**
+     * Retorna si user puede agregar una order nueva a ordersPack o no.
+     * @param user Usuario que quiere crear una Orden.
+     * @param ordersPack OrdersPack donde se quiere agregar la Orden.
+     * @param user_id Id del Usuario que quiere crear la Orden.
+     */
     private static canPlaceOrder(user: User, ordersPack: OrdersPack, user_id: Ref<User>): boolean{
         return ( 
             user &&
@@ -38,6 +49,11 @@ export class OrderRoutesController{
             !OrderRoutesController.hasPlacedOrder(user_id, ordersPack));
     }
 
+    /**
+     * Retorna si un usuario con el id user_id ha agregado una Orden a ordersPack.
+     * @param user_id Id del usuario que se quiere comprobar si ha agregado una Orden.
+     * @param ordersPack OrdersPack en el cual se quiere hacer la verificacion.
+     */
     private static hasPlacedOrder(user_id: Ref<User>, ordersPack: OrdersPack): boolean{
         for(let orderRef of ordersPack.orders){
             let order: Order = orderRef as Order;
@@ -49,6 +65,11 @@ export class OrderRoutesController{
         return false;
     }
 
+    /**
+     * Edita la informacion correspondiente a una Orden.
+     * @param req Request
+     * @param res Response
+     */
     public static async editOrder(req: Request, res: Response):Promise<void>{
         const {order_id, ordersPack_id, description, payed, price, paymentMethod, user_id} =  req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
@@ -62,6 +83,12 @@ export class OrderRoutesController{
         res.sendStatus(400);
     }
 
+    /**
+     * Retorna si el usuario que hizo la peticion de editar la orden puede editar la orden o no.
+     * @param order Orden que se quiere editar.
+     * @param ordersPack OrdersPack al que pertenece order.
+     * @param user_id Id de quien quiere editar la orden.
+     */
     private static canEditOrder(order: Order, ordersPack: OrdersPack, user_id: Ref<User>): boolean{
         return(
             ordersPack &&
@@ -71,6 +98,11 @@ export class OrderRoutesController{
         );
     }
 
+    /**
+     * Elimina una Orden y todas sus referencias de la base de datos.
+     * @param req Request
+     * @param res Response
+     */
     public static async deleteOrder(req: Request, res: Response): Promise<void>{
         const {order_id, ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);

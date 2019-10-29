@@ -2,6 +2,11 @@ import { Order } from "./Order";
 import { Ref } from "@typegoose/typegoose";
 import { User } from "../User/User";
 
+/**
+ * Builder para la clase que representa una Orden.
+ * 
+ * Esta clase se utiliza para poder aprovechar el patron de diseño Builder.
+ */
 export class OrderBuilder{
     private _description: String;
     private _price: number;

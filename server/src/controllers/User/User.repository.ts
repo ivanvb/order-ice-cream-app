@@ -5,31 +5,56 @@ import { OrdersPack } from '../OrdersPack/OrdersPack';
 
 export class UserRepository{
 
+    /**
+     * Devuelve todos los usuarios.
+     */
     public static async find(): Promise<User[]>{
         const users = await UserModel.find();
         return users;
     }
 
+    /**
+     * Devuelve el usuario cuyo id es igual al que se paso como parametro.
+     * @param _id Id del usuario que se quiere buscar.
+     */
     public static async findOne(_id: String|Ref<User>): Promise<User>{
         const user: User = await UserModel.findOne({_id: _id});
         return user;
     }
 
+    /**
+     * Guarda un usuario en la base de datos.
+     * @param user Usuario que se quiere guardar.
+     */
     public static async save(user: User): Promise<Ref<User>>{
         const saved: User = await UserModel.create(user);
         return (saved ? saved._id : null);
     }
 
+    /**
+     * Elimina un usuario de la base de datos.
+     * @param _id Id del usuario que se quiere eliminar.
+     */
     public static async delete(_id: String|Ref<User>): Promise<boolean>{
         const deleted =  await UserModel.deleteOne({_id: _id});
         return !!deleted;
     }
 
+    /**
+     * Busca un usuario cuyo email y password coincidan con lo pasado como parametro.
+     * @param email Email del usuario
+     * @param password Password del usuario
+     */
     public static async findByEmailAndPassword(email: String, password: String): Promise<User>{
         const user: User = await UserModel.findOne({email: email, password: password});
         return user;
     } 
 
+    /**
+     * Agrega una Orden al arreglo de ordenes de un usuario.
+     * @param user Usuario al que se le agregara la orden.
+     * @param order Orden que se le agregara al usuario.
+     */
     public static async addOrder(user: User, order: Order): Promise<boolean>{
         const orders: Array<Ref<Order>> = user.orders as Array<Ref<Order>>;
         orders.push(order._id);
@@ -38,6 +63,11 @@ export class UserRepository{
         return !!updatedUser.n;
     }
 
+    /**
+     * Agrega un OrdersPack al arreglo de ordersPacks de un usuario.
+     * @param user Usuario al que se le agregara el OrdersPack.
+     * @param ordersPack OrdersPack que se le agregara al Usuario.
+     */
     public static async addOrdersPack(user: User, ordersPack: OrdersPack): Promise<boolean>{
         const ordersPacks: Array<Ref<OrdersPack>> = user.ordersPacks as Array<Ref<OrdersPack>>;
         ordersPacks.push(ordersPack._id);
@@ -46,6 +76,11 @@ export class UserRepository{
         return !!updatedUser.n;
     }
 
+    /**
+     * Elimina una Orden del arreglo de ordenes de un Usuario.
+     * @param user_id Id del usuario del cual se borrara la Orden.
+     * @param order_id Id de la Orden que se agregara al usuario
+     */
     public static async deleteOrderFromUser(user_id: String|Ref<User>, order_id: Ref<Order>): Promise<boolean>{
         const user: User = await UserRepository.findOne(user_id);
         const orders: Order[] =  user.orders as Array<Order>;
@@ -56,6 +91,11 @@ export class UserRepository{
         return !!updated.n;
     }
 
+    /**
+     * Elimina un OrdersPack del arreglo de ordersPack de un Usuario.
+     * @param user_id Id del usuario del cual se borrara el OrdersPack.
+     * @param ordersPack_id Id del OrdersPack que se le agregara al usuario.
+     */
     public static async deleteOrdersPackFromUser(user_id: String|Ref<User>, ordersPack_id: Ref<OrdersPack>){
         const user: User = await UserRepository.findOne(user_id);
         const ordersPacks: OrdersPack[] =  user.ordersPacks as Array<OrdersPack>;

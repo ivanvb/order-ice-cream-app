@@ -10,6 +10,11 @@ import { Ref } from "@typegoose/typegoose";
 
 export class OrdersPackRoutesController{
 
+    /**
+     * Crea un OrdersPack para el usuario especificado.
+     * @param req Request
+     * @param res Response
+     */
     public static async createOrdersPack(req: Request, res: Response): Promise<void>{
         const {user_id, name, expirationDate} = req.body;
         const user: User = await UserRepository.findOne(user_id);
@@ -21,6 +26,11 @@ export class OrdersPackRoutesController{
         res.send(200)
     }
 
+    /**
+     * Actualiza la informacion del un OrdersPack.
+     * @param req Request
+     * @param res Response
+     */
     public static async updateOrdersPack(req: Request, res: Response): Promise<void>{
         const {newExpirationDate, deleteArray, ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
@@ -28,7 +38,7 @@ export class OrdersPackRoutesController{
         if(OrdersPackRoutesController.canUpdateOrdersPack(ordersPack, user_id)){
             if(newExpirationDate){
                 const newDate: Date =  new Date(Number(newExpirationDate));
-                OrdersPackRepository.addTime(newDate, ordersPack_id);
+                OrdersPackRepository.updateExpirationDate(newDate, ordersPack_id);
             }
     
             if(deleteArray){
@@ -42,6 +52,11 @@ export class OrdersPackRoutesController{
         
     }
 
+    /**
+     * Retorna si el usuario con el id user_id puede editar ordersPack o no.
+     * @param ordersPack OrdersPack que se quiere editar
+     * @param user_id Id del usuario que quiere editar el OrdersPack.
+     */
     private static canUpdateOrdersPack(ordersPack: OrdersPack, user_id: Ref<User>): boolean{
         return(
             ordersPack &&
@@ -50,6 +65,11 @@ export class OrdersPackRoutesController{
         );
     }
 
+    /**
+     * Elimina un OrdersPack y las referencias a este asi como sus ordenes y todas las referencias a estas.
+     * @param req Request
+     * @param res Response
+     */
     public static async deleteOrdersPack(req: Request, res: Response): Promise<void>{
         const {ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);

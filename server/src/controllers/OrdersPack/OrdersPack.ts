@@ -4,6 +4,12 @@ import { Entity } from "../Entity/Entity";
 import { OrdersPackBuilder } from "./OrdersPack.builder";
 import { prop, arrayProp, getModelForClass, Ref} from '@typegoose/typegoose';
 
+/**
+ * Clase representativa de un OrdersPack.
+ * 
+ * Las propiedades tienen los decoradores '@prop' y '@arrayProp' para modelar
+ * esta clase como un documento dentro de MongoDB.
+ */
 export class OrdersPack extends Entity{
 
     @prop()
@@ -23,4 +29,5 @@ export class OrdersPack extends Entity{
     }
 }
 
+///Exporta el modelo de la clase el cual será utilizado para realizar operaciones con relación a la base de datos.
 export const OrdersPackModel = getModelForClass(OrdersPack)

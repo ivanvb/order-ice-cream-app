@@ -2,6 +2,11 @@ import { User } from "../User/User";
 import { Order } from "../Order/Order";
 import { OrdersPack } from "./OrdersPack";
 
+/**
+ * Builder para la clase que representa un OrdersPack.
+ * 
+ * Esta clase se utiliza para poder aprovechar el patron de diseño Builder.
+ */
 export class OrdersPackBuilder{
     private _creator: User;
     private _orders: Order[];
