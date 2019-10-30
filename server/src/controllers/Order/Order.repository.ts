@@ -14,7 +14,7 @@ export class OrderRepository{
      * Busca una orden en la base de datos.
      * @param _id Id de la orden que se quiere obtener.
      */
-    public static async findById(_id: String|Ref<Order>): Promise<Order>{
+    public static async findById(_id: string|Ref<Order>): Promise<Order>{
         const order: Order = await OrderModel.findOne({_id: _id});
         return order;
     }
@@ -32,7 +32,7 @@ export class OrderRepository{
      * Elimina una orden de la base de datos.
      * @param _id Id de la orden que sera eliminada.
      */
-    public static async delete(_id: String|Ref<Order>): Promise<boolean>{
+    public static async delete(_id: string|Ref<Order>): Promise<boolean>{
         let deleted = await OrderModel.deleteOne({_id: _id});
         return !!deleted;
     }
@@ -46,7 +46,7 @@ export class OrderRepository{
      * @param payed Variable que representa si la orden se ha pagado o no.
      * @param price Precio de la orden.
      */
-    public static async editOrderInformation(order: Order, description: String, paymentMethod: number, payed: boolean, price: number): Promise<boolean>{
+    public static async editOrderInformation(order: Order, description: string, paymentMethod: number, payed: boolean, price: number): Promise<boolean>{
         const updated = await OrderModel.updateOne({_id: order._id}, {
             description: description,
             paymentMethod: paymentMethod,

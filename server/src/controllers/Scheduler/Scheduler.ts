@@ -1,6 +1,7 @@
 import {scheduleJob, Job, scheduledJobs} from 'node-schedule';
 import { OrdersPack } from '../OrdersPack/OrdersPack';
 import { Ref } from '@typegoose/typegoose';
+import { Emailer } from '../Emailer/Emailer';
 
 /**
  * Interfaz para crear un hashMap de Job en donde la llave
@@ -40,8 +41,8 @@ export class Scheduler{
      * 
      * @param ordersPack_id iId del ordersPack
      */
-    private static async notifyExpiration(ordersPack_id: Ref<OrdersPack> | String){
-        ///email is sent here
+    private static async notifyExpiration(ordersPack_id: Ref<OrdersPack> | string){
+        const senderEmail = await Emailer.sendEmailNotification(ordersPack_id);
 
         for(let registeredOrdesPack_id of Object.keys(scheduleJob)){
             if(registeredOrdesPack_id == ordersPack_id) delete scheduleJob[registeredOrdesPack_id];

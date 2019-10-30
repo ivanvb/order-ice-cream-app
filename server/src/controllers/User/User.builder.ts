@@ -9,15 +9,15 @@ import { OrdersPack } from '../OrdersPack/OrdersPack';
  */
 export class UserBuilder{
 
-    private _name: String;
-    private _email: String;
-    private _password: String;
+    private _name: string;
+    private _email: string;
+    private _password: string;
     private _orders: Order[];
     private _ordersPacks: OrdersPack[];
     private _createdAt: Date;
     private _updatedAt: Date;
 
-    constructor(name: String, email: String, password: String){
+    constructor(name: string, email: string, password: string){
         this._name = name;
         this._email = email;
         this._password = password;
@@ -47,15 +47,15 @@ export class UserBuilder{
         return new User(this);
     }
 
-    get name(): String{
+    get name(): string{
         return this._name;
     }
 
-    get password(): String{
+    get password(): string{
         return this._password;
     }
 
-    get email(): String{
+    get email(): string{
         return this._email;
     }
 

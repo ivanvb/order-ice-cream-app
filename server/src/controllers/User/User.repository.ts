@@ -17,7 +17,7 @@ export class UserRepository{
      * Devuelve el usuario cuyo id es igual al que se paso como parametro.
      * @param _id Id del usuario que se quiere buscar.
      */
-    public static async findOne(_id: String|Ref<User>): Promise<User>{
+    public static async findOne(_id: string|Ref<User>): Promise<User>{
         const user: User = await UserModel.findOne({_id: _id});
         return user;
     }
@@ -35,7 +35,7 @@ export class UserRepository{
      * Elimina un usuario de la base de datos.
      * @param _id Id del usuario que se quiere eliminar.
      */
-    public static async delete(_id: String|Ref<User>): Promise<boolean>{
+    public static async delete(_id: string|Ref<User>): Promise<boolean>{
         const deleted =  await UserModel.deleteOne({_id: _id});
         return !!deleted;
     }
@@ -45,7 +45,7 @@ export class UserRepository{
      * @param email Email del usuario
      * @param password Password del usuario
      */
-    public static async findByEmailAndPassword(email: String, password: String): Promise<User>{
+    public static async findByEmailAndPassword(email: string, password: string): Promise<User>{
         const user: User = await UserModel.findOne({email: email, password: password});
         return user;
     } 
@@ -81,7 +81,7 @@ export class UserRepository{
      * @param user_id Id del usuario del cual se borrara la Orden.
      * @param order_id Id de la Orden que se agregara al usuario
      */
-    public static async deleteOrderFromUser(user_id: String|Ref<User>, order_id: Ref<Order>): Promise<boolean>{
+    public static async deleteOrderFromUser(user_id: string|Ref<User>, order_id: Ref<Order>): Promise<boolean>{
         const user: User = await UserRepository.findOne(user_id);
         const orders: Order[] =  user.orders as Array<Order>;
 
@@ -96,7 +96,7 @@ export class UserRepository{
      * @param user_id Id del usuario del cual se borrara el OrdersPack.
      * @param ordersPack_id Id del OrdersPack que se le agregara al usuario.
      */
-    public static async deleteOrdersPackFromUser(user_id: String|Ref<User>, ordersPack_id: Ref<OrdersPack>){
+    public static async deleteOrdersPackFromUser(user_id: string|Ref<User>, ordersPack_id: Ref<OrdersPack>){
         const user: User = await UserRepository.findOne(user_id);
         const ordersPacks: OrdersPack[] =  user.ordersPacks as Array<OrdersPack>;
 

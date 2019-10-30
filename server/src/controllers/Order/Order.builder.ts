@@ -8,7 +8,7 @@ import { User } from "../User/User";
  * Esta clase se utiliza para poder aprovechar el patron de diseño Builder.
  */
 export class OrderBuilder{
-    private _description: String;
+    private _description: string;
     private _price: number;
     private _userId: Ref<User>;
     private _payed: boolean;
@@ -16,7 +16,7 @@ export class OrderBuilder{
     private _createdAt: Date;
     private _updatedAt: Date;
 
-    constructor(description: String, price: number, user_id: Ref<User>){
+    constructor(description: string, price: number, user_id: Ref<User>){
         this._description = description;
         this._price = price;
         this._userId = user_id;
@@ -46,7 +46,7 @@ export class OrderBuilder{
         return new Order(this);
     }
 
-    get description(): String{
+    get description(): string{
         return this._description;
     }
 

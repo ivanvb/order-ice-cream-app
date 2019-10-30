@@ -7,10 +7,6 @@ import dotenv from 'dotenv';
 import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
 import {orderRoutes} from './routes/order.routes';
-import { Scheduler } from "./controllers/Scheduler/Scheduler";
-import { OrdersPack } from "./controllers/OrdersPack/OrdersPack";
-import { OrdersPackRepository } from "./controllers/OrdersPack/OrdersPack.repository";
-
 
 /**
  * Punto de entrada de la aplicación.

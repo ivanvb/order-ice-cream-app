@@ -13,11 +13,11 @@ import { prop, getModelForClass, Ref, arrayProp } from '@typegoose/typegoose';
 export class User extends Entity{
 
     @prop()
-    name: String;
+    name: string;
     @prop()
-    password: String;
+    password: string;
     @prop()
-    email: String;
+    email: string;
     @arrayProp({itemsRef: Order})
     orders: Ref<Order[]>;
     @arrayProp({itemsRef: OrdersPack})

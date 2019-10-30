@@ -12,7 +12,7 @@ import { User } from '../User/User';
 export class Order extends Entity{
 
     @prop()
-    description: String;
+    description: string;
     ///Referencia al User que creo esta Orden.
     @prop({ref: "User"})
     user_id: Ref<User>;
@@ -30,6 +30,12 @@ export class Order extends Entity{
         this.price =  orderBuilder.price;
         this.payed =  (orderBuilder.payed ? orderBuilder.payed : false);
         this.paymentMethod = (this.paymentMethod ? this.paymentMethod : PaymentMethod.EFECTIVO);
+    }
+
+    toString(): string{
+        return (
+            `${this.description} para ${(<User> this.user_id).name} para pagar en ${PaymentMethod[this.paymentMethod].toLowerCase()}.`
+        )
     }
 }
 

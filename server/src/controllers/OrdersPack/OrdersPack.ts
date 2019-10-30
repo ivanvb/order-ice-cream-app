@@ -13,7 +13,7 @@ import { prop, arrayProp, getModelForClass, Ref} from '@typegoose/typegoose';
 export class OrdersPack extends Entity{
 
     @prop()
-    name: String
+    name: string
     @arrayProp({itemsRef: Order})
     orders: Ref<Order>[];
     @prop({ref: "User"})
@@ -26,6 +26,15 @@ export class OrdersPack extends Entity{
         this.creator = ordersPackBuilder.creator;
         this.expirationDate =  ordersPackBuilder.expirationDate;
         this.name = ordersPackBuilder.name;
+    }
+
+    public toString(): string{
+        let ordersPackAsString: string = "";
+        for(let order of this.orders){
+            ordersPackAsString += order.toString() + "<br>";
+        }
+
+        return ordersPackAsString;
     }
 }
 

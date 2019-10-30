@@ -13,9 +13,9 @@ export class OrdersPackBuilder{
     private _expirationDate: Date;
     private _createdAt: Date;
     private _updatedAt: Date;
-    private _name: String;
+    private _name: string;
 
-    constructor(creator: User, expirationDate: Date, name: String){
+    constructor(creator: User, expirationDate: Date, name: string){
         this._creator = creator;
         this._expirationDate =  expirationDate;
         this._name = name;
@@ -60,7 +60,7 @@ export class OrdersPackBuilder{
         return this._updatedAt;
     }
 
-    get name(): String{
+    get name(): string{
         return this._name;
     }
 }

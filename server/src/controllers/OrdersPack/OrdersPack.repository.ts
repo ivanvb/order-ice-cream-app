@@ -17,8 +17,8 @@ export class OrdersPackRepository{
      * Devuelve el OrdersPack con el id pasado como parametro. Retorna undefined si no existe.
      * @param _id Id del OrdersPack que se quiere obtener.
      */
-    public static async findOne(_id: String|Ref<OrdersPack>): Promise<OrdersPack>{
-        const ordersPack: OrdersPack = await OrdersPackModel.findOne({_id: _id}).populate('orders').populate('creator');
+    public static async findOne(_id: string|Ref<OrdersPack>): Promise<OrdersPack>{
+        const ordersPack: OrdersPack = await OrdersPackModel.findOne({_id: _id}).populate({path: 'orders', populate: 'user_id'}).populate('creator');
         return ordersPack;
     }
 
@@ -35,7 +35,7 @@ export class OrdersPackRepository{
      * Elimina un OrdersPack de la base de datos.
      * @param _id Id del OrdersPack que se desea eliminar.
      */
-    public static async delete(_id: String|Ref<OrdersPack>): Promise<boolean>{
+    public static async delete(_id: string|Ref<OrdersPack>): Promise<boolean>{
         const deleted =  await OrdersPackModel.deleteOne({_id: _id});
         return !!deleted;
     }
@@ -45,7 +45,7 @@ export class OrdersPackRepository{
      * @param order Orden que se desea agregar.
      * @param ordersPack_id Id del OrdersPack al que se le quiere agregar la orden.
      */
-    public static async addOrder(order: Order, ordersPack_id: String): Promise<boolean>{
+    public static async addOrder(order: Order, ordersPack_id: string): Promise<boolean>{
         const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
         const orders: Array<Ref<Order>> =  ordersPack.orders;
 
@@ -61,7 +61,7 @@ export class OrdersPackRepository{
      * @param newExpirationDate Nueva fecha de expiracion
      * @param ordersPack_id Id del OrdersPack.
      */
-    public static async updateExpirationDate(newExpirationDate: Date, ordersPack_id: String): Promise<boolean>{
+    public static async updateExpirationDate(newExpirationDate: Date, ordersPack_id: string): Promise<boolean>{
         const updated = await OrdersPackModel.updateOne({_id: ordersPack_id}, {expirationDate: newExpirationDate, updatedAt: new Date()});
         return !!updated.n;
     }
@@ -71,7 +71,7 @@ export class OrdersPackRepository{
      * @param ordersToDelete Ordenes que se desean eliminar del OrdersPack.
      * @param ordersPack_id Id del OrdersPack.
      */
-    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPack_id: String): Promise<boolean>{
+    public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPack_id: string): Promise<boolean>{
         const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
         const orders: Array<Order> = ordersPack.orders as Array<Order>;
         
