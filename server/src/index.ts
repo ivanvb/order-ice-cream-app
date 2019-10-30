@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
 import {orderRoutes} from './routes/order.routes';
+import { Scheduler } from "./controllers/Scheduler/Scheduler";
 
 /**
  * Punto de entrada de la aplicación.
@@ -17,6 +18,7 @@ import {orderRoutes} from './routes/order.routes';
     dotenv.config();
     await mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
+    Scheduler.initialize();
     const app: express.Application = express();
 
     app.use(cors());

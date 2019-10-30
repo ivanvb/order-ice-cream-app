@@ -2,6 +2,7 @@ import {scheduleJob, Job, scheduledJobs} from 'node-schedule';
 import { OrdersPack } from '../OrdersPack/OrdersPack';
 import { Ref } from '@typegoose/typegoose';
 import { Emailer } from '../Emailer/Emailer';
+import { OrdersPackRepository } from '../OrdersPack/OrdersPack.repository';
 
 /**
  * Interfaz para crear un hashMap de Job en donde la llave
@@ -22,6 +23,17 @@ export class Scheduler{
 
     private static scheduledJobsMap: JobMap = {};
 
+    /**
+     * Calendariza todos los ordersPack que no han expirado.
+     */
+    public static async initialize(){
+        const ordersPacks: OrdersPack[] = await OrdersPackRepository.find();
+        for(let ordersPack of ordersPacks){
+            if(ordersPack.expirationDate < new Date()){
+                Scheduler.scheduleOrdersPack(ordersPack.expirationDate, ordersPack._id);
+            }
+        }
+    }
     /**
      * Crea un evento calendarizado para la fecha de expiracion del ordersPack.
      * Una vez se alcance esta fecha se notificara de la expiracion.

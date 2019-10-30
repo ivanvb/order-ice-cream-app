@@ -7,6 +7,7 @@ import { OrdersPackRepository } from "../controllers/OrdersPack/OrdersPack.repos
 import { Order } from "../controllers/Order/Order";
 import { OrderRepository } from "../controllers/Order/Order.repository";
 import { Ref } from "@typegoose/typegoose";
+import { Scheduler } from "../controllers/Scheduler/Scheduler";
 
 export class OrdersPackRoutesController{
 
@@ -22,6 +23,7 @@ export class OrdersPackRoutesController{
         const ordersPack: OrdersPack =  new OrdersPackBuilder(user, new Date(Number(expirationDate)), name).build();
         const savedOrdersPack: OrdersPack = await OrdersPackRepository.save(ordersPack);
         const saved: boolean  = await UserRepository.addOrdersPack(user, savedOrdersPack);
+        Scheduler.scheduleOrdersPack(expirationDate, ordersPack._id);
 
         res.send(200)
     }
@@ -39,6 +41,7 @@ export class OrdersPackRoutesController{
             if(newExpirationDate){
                 const newDate: Date =  new Date(Number(newExpirationDate));
                 OrdersPackRepository.updateExpirationDate(newDate, ordersPack_id);
+                Scheduler.rescheduleOrdersPack(newExpirationDate, ordersPack_id);
             }
     
             if(deleteArray){
@@ -84,6 +87,7 @@ export class OrdersPackRoutesController{
             }
 
             await UserRepository.deleteOrdersPackFromUser(creator._id, ordersPack._id);
+            Scheduler.removeScheduling(ordersPack_id);
 
             res.sendStatus(200);
             return;
