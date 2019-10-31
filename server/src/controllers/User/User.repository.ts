@@ -2,6 +2,8 @@ import {User, UserModel} from './User';
 import { Order } from '../Order/Order';
 import { Ref } from '@typegoose/typegoose';
 import { OrdersPack } from '../OrdersPack/OrdersPack';
+import { ExpressError } from '../ErrorControllers/ExpressError';
+import { ErrorCodes } from '../ErrorControllers/ErrorCodeEnum';
 
 export class UserRepository{
 
@@ -23,12 +25,16 @@ export class UserRepository{
     }
 
     /**
-     * Guarda un usuario en la base de datos.
+     * Guarda un usuario en la base de datos si el email con el que se quiere registrar no existe.
      * @param user Usuario que se quiere guardar.
      */
     public static async save(user: User): Promise<User>{
-        const saved: User = await UserModel.create(user);
-        return (saved ? saved : null);
+        if(!await UserModel.exists({email: user.email})){
+            const saved: User = await UserModel.create(user);
+            return (saved ? saved : null);
+        } else {
+            throw new ExpressError('duplicated email', ErrorCodes.DUPLICATED_EMAIL, 400);
+        }
     }
 
     /**

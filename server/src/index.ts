@@ -24,7 +24,8 @@ let app: express.Application = express();
         (process.argv.includes('--prod') ? process.env.DATABASE_URL : process.env.TEST_DATABASE_URL), 
         {
             useNewUrlParser: true, 
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            useCreateIndex: true
         });
 
     Scheduler.initialize();

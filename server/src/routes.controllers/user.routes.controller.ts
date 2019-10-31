@@ -34,8 +34,11 @@ export class UserRoutesController {
         if(!email || !password || !name) return next(new ExpressError('incomplete information', ErrorCodes.INCOMPLETE_INFORMATION, 400));
         
         const user: User = new UserBuilder(name, email, password).build();
-        const savedUser: User =  await UserRepository.save(user) as User;
-
-        res.send({user: savedUser});
+        try{
+            const savedUser: User =  await UserRepository.save(user) as User;
+            res.send({user: savedUser});
+        } catch(e){ 
+            next(e) 
+        }
     }
 }

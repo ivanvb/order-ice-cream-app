@@ -11,7 +11,7 @@ import { UserBuilder } from '../../src/controllers/User/User.builder';
 const app = require('../../src/index');
 
 describe('User Routes Controller', async ()=>{
-    const name =  'newname', password = 'password', email = 'email';
+    const name =  'newname', password = 'password', email = 'email@email.com';
     beforeEach(clearDatabase);
 
     it('Should create a new user when the correct parameters are specified.', async ()=>{
@@ -39,6 +39,18 @@ describe('User Routes Controller', async ()=>{
                                 .expect(400);
         
         expect((<any> res.body).code).to.equal(Number(ErrorCodes.INCOMPLETE_INFORMATION));
+    });
+
+    it('Should not create a new user with an already used email', async ()=>{
+        const user: User = await UserRepository.save(new UserBuilder(name, email, password).build());
+
+        const res: Response = await request(app)
+                                .post('/user/signup')
+                                .send({name, password, email})
+                                .set('Accept', 'application/json')
+                                .expect(400);
+
+        expect((<any> res.body).code).to.equal(Number(ErrorCodes.DUPLICATED_EMAIL));
     });
 
     it('Should not login an unregistered user.', async()=>{
@@ -75,5 +87,5 @@ describe('User Routes Controller', async ()=>{
                                 .expect(200);
 
         expect((<any> res.body).user.email).to.equal(email);
-    })
+    });
 })
