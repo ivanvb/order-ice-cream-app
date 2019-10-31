@@ -8,6 +8,7 @@ import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
 import {orderRoutes} from './routes/order.routes';
 import { Scheduler } from "./controllers/Scheduler/Scheduler";
+import { ExpressError } from "./controllers/ErrorControllers/ExpressError";
 
 /**
  * Punto de entrada de la aplicación.
@@ -32,4 +33,12 @@ import { Scheduler } from "./controllers/Scheduler/Scheduler";
     app.use('/user', userRoutes);
     app.use('/ordersPack', ordersPackRoutes);
     app.use('/order', orderRoutes);
+
+    ///Error handling middleware.
+    app.use(function(error: ExpressError, req: express.Request, res: express.Response, next: express.NextFunction){
+        res.status(error.status).json({
+            code: Number(error.code),
+            message: error.message
+        });
+    })
 })();

@@ -8,6 +8,9 @@ import { Order } from "../controllers/Order/Order";
 import { OrderRepository } from "../controllers/Order/Order.repository";
 import { Ref } from "@typegoose/typegoose";
 import { Scheduler } from "../controllers/Scheduler/Scheduler";
+import { NextFunction } from "connect";
+import { ExpressError } from "../controllers/ErrorControllers/ExpressError";
+import { ErrorCodes } from "../controllers/ErrorControllers/ErrorCodeEnum";
 
 export class OrdersPackRoutesController{
 
@@ -16,16 +19,26 @@ export class OrdersPackRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async createOrdersPack(req: Request, res: Response): Promise<void>{
+    public static async createOrdersPack(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {user_id, name, expirationDate} = req.body;
+
+        if(!user_id || !name || !expirationDate) 
+            return next(new ExpressError("incomplete information", ErrorCodes.INCOMPLETE_INFORMATION, 400));
+
+        if(expirationDate < new Date())
+            return next(new ExpressError("expiration date cannot be in the past", ErrorCodes.INCORRECT_DATE, 400));
+
         const user: User = await UserRepository.findOne(user_id);
+
+        if(!user)
+            return next(new ExpressError("user not found", ErrorCodes.RESOURCE_NOT_FOUND, 404));
 
         const ordersPack: OrdersPack =  new OrdersPackBuilder(user, new Date(Number(expirationDate)), name).build();
         const savedOrdersPack: OrdersPack = await OrdersPackRepository.save(ordersPack);
         const saved: boolean  = await UserRepository.addOrdersPack(user, savedOrdersPack);
         Scheduler.scheduleOrdersPack(expirationDate, ordersPack._id);
 
-        res.send(200)
+        res.send(200);
     }
 
     /**
@@ -33,7 +46,7 @@ export class OrdersPackRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async updateOrdersPack(req: Request, res: Response): Promise<void>{
+    public static async updateOrdersPack(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {newExpirationDate, deleteArray, ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
 
@@ -51,8 +64,7 @@ export class OrdersPackRoutesController{
             return;
         }
 
-        res.sendStatus(400);
-        
+        next(new ExpressError("there was an error updating the requested resource", ErrorCodes.GENERIC_UPDATE_ERROR, 400));
     }
 
     /**
@@ -73,7 +85,7 @@ export class OrdersPackRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async deleteOrdersPack(req: Request, res: Response): Promise<void>{
+    public static async deleteOrdersPack(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
         const creator: User = ordersPack.creator as User;
@@ -93,6 +105,6 @@ export class OrdersPackRoutesController{
             return;
         }
 
-        res.sendStatus(400);
+        next(new ExpressError("there was an error deleting the requested resource", ErrorCodes.GENERIC_DELETE_ERROR, 400));
     }
 }

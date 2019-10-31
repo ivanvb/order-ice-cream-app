@@ -7,6 +7,9 @@ import { OrderBuilder } from "../controllers/Order/Order.builder";
 import { OrderRepository } from "../controllers/Order/Order.repository";
 import { OrdersPack } from "../controllers/OrdersPack/OrdersPack";
 import { Ref } from "@typegoose/typegoose";
+import { NextFunction } from "connect";
+import { ExpressError } from "../controllers/ErrorControllers/ExpressError";
+import { ErrorCodes } from "../controllers/ErrorControllers/ErrorCodeEnum";
 
 export class OrderRoutesController{
 
@@ -15,7 +18,7 @@ export class OrderRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async createOrder(req: Request, res: Response){
+    public static async createOrder(req: Request, res: Response, next: NextFunction){
         const {ordersPack_id, description, price, user_id, paymentMethod, payed} =  req.body;
         const user: User = await UserRepository.findOne(user_id);
         const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
@@ -32,7 +35,7 @@ export class OrderRoutesController{
 
             res.sendStatus(200);
         } else {
-            res.send({error: "There was an error placing your order."})
+            return next(new ExpressError("there was an error placing your order.", ErrorCodes.GENERIC_ERROR, 400));
         }
     }
 
@@ -46,6 +49,7 @@ export class OrderRoutesController{
         return ( 
             user &&
             ordersPack &&
+            ordersPack.expirationDate > new Date(),
             !OrderRoutesController.hasPlacedOrder(user_id, ordersPack));
     }
 
@@ -57,7 +61,7 @@ export class OrderRoutesController{
     private static hasPlacedOrder(user_id: Ref<User>, ordersPack: OrdersPack): boolean{
         for(let orderRef of ordersPack.orders){
             let order: Order = orderRef as Order;
-            if(order.user_id == user_id){
+            if((<User> order.user_id)._id == user_id){
                 return true;
             }
         }
@@ -70,7 +74,7 @@ export class OrderRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async editOrder(req: Request, res: Response):Promise<void>{
+    public static async editOrder(req: Request, res: Response, next: NextFunction):Promise<void>{
         const {order_id, ordersPack_id, description, payed, price, paymentMethod, user_id} =  req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
         const order: Order = await OrderRepository.findById(order_id);
@@ -80,7 +84,7 @@ export class OrderRoutesController{
             res.sendStatus(200);
             return;
         }
-        res.sendStatus(400);
+        return next(new ExpressError("there was an error updating the requested resource", ErrorCodes.GENERIC_ERROR, 400));
     }
 
     /**
@@ -103,7 +107,7 @@ export class OrderRoutesController{
      * @param req Request
      * @param res Response
      */
-    public static async deleteOrder(req: Request, res: Response): Promise<void>{
+    public static async deleteOrder(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {order_id, ordersPack_id, user_id} = req.body;
         const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
         const order: Order = await OrderRepository.findById(order_id);
@@ -115,6 +119,6 @@ export class OrderRoutesController{
             res.sendStatus(200);
             return;
         }
-        res.sendStatus(400);
+        return next(new ExpressError("there was an error deleting the requested resource", ErrorCodes.GENERIC_DELETE_ERROR, 400));
     }
 }
