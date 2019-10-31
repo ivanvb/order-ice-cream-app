@@ -3,10 +3,7 @@ declare function require(name:string);
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 const request = require('supertest');
-import * as express from 'express';
-import { UserModel, User } from '../../src/controllers/User/User';
-import { OrderModel } from '../../src/controllers/Order/Order';
-import { OrdersPackModel } from '../../src/controllers/OrdersPack/OrdersPack';
+import { User } from '../../src/controllers/User/User';
 import { ErrorCodes } from '../../src/controllers/ErrorControllers/ErrorCodeEnum';
 import { clearDatabase } from '../index.test';
 import { UserRepository } from '../../src/controllers/User/User.repository';
@@ -26,7 +23,7 @@ describe('User Routes Controller', async ()=>{
                                 .expect(200)
         
 
-        const user: User = await UserRepository.findOne((<any> res.body).user._id);
+        const user: User = await UserRepository.findById((<any> res.body).user._id);
 
         expect(user).to.not.be.null;
     });

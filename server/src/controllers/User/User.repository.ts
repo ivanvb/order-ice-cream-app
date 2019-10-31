@@ -17,7 +17,7 @@ export class UserRepository{
      * Devuelve el usuario cuyo id es igual al que se paso como parametro.
      * @param _id Id del usuario que se quiere buscar.
      */
-    public static async findOne(_id: string|Ref<User>): Promise<User>{
+    public static async findById(_id: string|Ref<User>): Promise<User>{
         const user: User = await UserModel.findOne({_id: _id});
         return user;
     }
@@ -82,7 +82,7 @@ export class UserRepository{
      * @param order_id Id de la Orden que se agregara al usuario
      */
     public static async deleteOrderFromUser(user_id: string|Ref<User>, order_id: Ref<Order>): Promise<boolean>{
-        const user: User = await UserRepository.findOne(user_id);
+        const user: User = await UserRepository.findById(user_id);
         const orders: Order[] =  user.orders as Array<Order>;
 
         orders.splice(orders.findIndex(order => order._id != order_id), 1);
@@ -97,7 +97,7 @@ export class UserRepository{
      * @param ordersPack_id Id del OrdersPack que se le agregara al usuario.
      */
     public static async deleteOrdersPackFromUser(user_id: string|Ref<User>, ordersPack_id: Ref<OrdersPack>){
-        const user: User = await UserRepository.findOne(user_id);
+        const user: User = await UserRepository.findById(user_id);
         const ordersPacks: OrdersPack[] =  user.ordersPacks as Array<OrdersPack>;
 
         ordersPacks.splice(ordersPacks.findIndex(ordersPack => ordersPack._id != ordersPack_id), 1);

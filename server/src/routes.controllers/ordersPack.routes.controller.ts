@@ -28,7 +28,7 @@ export class OrdersPackRoutesController{
         if(expirationDate < new Date())
             return next(new ExpressError("expiration date cannot be in the past", ErrorCodes.INCORRECT_DATE, 400));
 
-        const user: User = await UserRepository.findOne(user_id);
+        const user: User = await UserRepository.findById(user_id);
 
         if(!user)
             return next(new ExpressError("user not found", ErrorCodes.RESOURCE_NOT_FOUND, 404));
@@ -48,7 +48,7 @@ export class OrdersPackRoutesController{
      */
     public static async updateOrdersPack(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {newExpirationDate, deleteArray, ordersPack_id, user_id} = req.body;
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
 
         if(OrdersPackRoutesController.canUpdateOrdersPack(ordersPack, user_id)){
             if(newExpirationDate){
@@ -87,7 +87,7 @@ export class OrdersPackRoutesController{
      */
     public static async deleteOrdersPack(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {ordersPack_id, user_id} = req.body;
-        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack = await OrdersPackRepository.findById(ordersPack_id);
         const creator: User = ordersPack.creator as User;
         if(creator && ordersPack && creator._id == user_id){
             await OrdersPackRepository.delete(ordersPack_id);

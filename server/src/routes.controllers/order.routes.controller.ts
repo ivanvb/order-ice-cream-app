@@ -20,20 +20,20 @@ export class OrderRoutesController{
      */
     public static async createOrder(req: Request, res: Response, next: NextFunction){
         const {ordersPack_id, description, price, user_id, paymentMethod, payed} =  req.body;
-        const user: User = await UserRepository.findOne(user_id);
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        const user: User = await UserRepository.findById(user_id);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
 
-        const order: Order = new OrderBuilder(description, price, user_id)
+        if(OrderRoutesController.canPlaceOrder(user, ordersPack, user_id)){
+            const order: Order = new OrderBuilder(description, price, user_id)
                                               .setPaymentMethod(paymentMethod)
                                               .setPayed(payed)
                                               .build();
-        
-        if(OrderRoutesController.canPlaceOrder(user, ordersPack, user_id)){
+
             const savedOrder: Order = await OrderRepository.save(order);
             await OrdersPackRepository.addOrder(savedOrder, ordersPack_id);
             await UserRepository.addOrder(user, savedOrder);
 
-            res.sendStatus(200);
+            res.send({order: savedOrder});
         } else {
             return next(new ExpressError("there was an error placing your order.", ErrorCodes.GENERIC_ERROR, 400));
         }
@@ -49,7 +49,7 @@ export class OrderRoutesController{
         return ( 
             user &&
             ordersPack &&
-            ordersPack.expirationDate > new Date(),
+            ordersPack.expirationDate > new Date() &&
             !OrderRoutesController.hasPlacedOrder(user_id, ordersPack));
     }
 
@@ -76,7 +76,7 @@ export class OrderRoutesController{
      */
     public static async editOrder(req: Request, res: Response, next: NextFunction):Promise<void>{
         const {order_id, ordersPack_id, description, payed, price, paymentMethod, user_id} =  req.body;
-        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack = await OrdersPackRepository.findById(ordersPack_id);
         const order: Order = await OrderRepository.findById(order_id);
 
         if(OrderRoutesController.canEditOrder(order, ordersPack, user_id)){
@@ -84,7 +84,7 @@ export class OrderRoutesController{
             res.sendStatus(200);
             return;
         }
-        return next(new ExpressError("there was an error updating the requested resource", ErrorCodes.GENERIC_ERROR, 400));
+        return next(new ExpressError("there was an error updating the requested resource", ErrorCodes.GENERIC_UPDATE_ERROR, 400));
     }
 
     /**
@@ -109,13 +109,13 @@ export class OrderRoutesController{
      */
     public static async deleteOrder(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {order_id, ordersPack_id, user_id} = req.body;
-        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack = await OrdersPackRepository.findById(ordersPack_id);
         const order: Order = await OrderRepository.findById(order_id);
 
         if(OrderRoutesController.canEditOrder(order, ordersPack, user_id)){
-            UserRepository.deleteOrderFromUser(user_id, order_id);
-            OrdersPackRepository.deleteOrder(order_id, ordersPack_id);
-            OrderRepository.delete(order_id);
+            await UserRepository.deleteOrderFromUser(user_id, order_id);
+            await OrdersPackRepository.deleteOrder(order_id, ordersPack_id);
+            await OrderRepository.delete(order_id);
             res.sendStatus(200);
             return;
         }

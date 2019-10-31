@@ -19,7 +19,7 @@ export class Emailer{
      */
     public static async sendEmailNotification(ordersPack_id: Ref<OrdersPack> | string){
         const receiver = await Emailer.pickEmailReceiver(ordersPack_id);
-        const ordersPack: OrdersPack = await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack = await OrdersPackRepository.findById(ordersPack_id);
         Emailer.sendMail(receiver, ordersPack);
     }
 
@@ -30,14 +30,14 @@ export class Emailer{
      * @param ordersPack_id Id del ordersPack del cual se sacara el email.
      */
     private static async pickEmailReceiver(ordersPack_id: Ref<OrdersPack> | string): Promise<string>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
         const orders: Order[] = ordersPack.orders as Order[];
 
         const senderIndex = Math.floor(Math.random() * (1 + orders.length));
 
         const sender: User = (senderIndex === orders.length) ? 
                              ordersPack.creator as User: 
-                             await UserRepository.findOne(orders[senderIndex].user_id);
+                             await UserRepository.findById(orders[senderIndex].user_id);
 
         return sender.email;
     }

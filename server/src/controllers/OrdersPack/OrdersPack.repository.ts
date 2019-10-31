@@ -17,7 +17,7 @@ export class OrdersPackRepository{
      * Devuelve el OrdersPack con el id pasado como parametro. Retorna undefined si no existe.
      * @param _id Id del OrdersPack que se quiere obtener.
      */
-    public static async findOne(_id: string|Ref<OrdersPack>): Promise<OrdersPack>{
+    public static async findById(_id: string|Ref<OrdersPack>): Promise<OrdersPack>{
         const ordersPack: OrdersPack = await OrdersPackModel.findOne({_id: _id}).populate({path: 'orders', populate: 'user_id'}).populate('creator');
         return ordersPack;
     }
@@ -45,8 +45,8 @@ export class OrdersPackRepository{
      * @param order Orden que se desea agregar.
      * @param ordersPack_id Id del OrdersPack al que se le quiere agregar la orden.
      */
-    public static async addOrder(order: Order, ordersPack_id: string): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+    public static async addOrder(order: Order, ordersPack_id: string | Ref<OrdersPack>): Promise<boolean>{
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
         const orders: Array<Ref<Order>> =  ordersPack.orders;
 
         if(!orders.includes(order._id)){
@@ -72,7 +72,7 @@ export class OrdersPackRepository{
      * @param ordersPack_id Id del OrdersPack.
      */
     public static async deleteOrders(ordersToDelete: Array<Ref<Order>>, ordersPack_id: string): Promise<boolean>{
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
         const orders: Array<Order> = ordersPack.orders as Array<Order>;
         
         for(let orderToDelete of ordersToDelete){
@@ -95,7 +95,7 @@ export class OrdersPackRepository{
      * @param ordersPack_id Id del OrdersPack.
      */
     public static async deleteOrder(order_id: Ref<Order>, ordersPack_id: Ref<OrdersPack>){
-        const ordersPack: OrdersPack =  await OrdersPackRepository.findOne(ordersPack_id);
+        const ordersPack: OrdersPack =  await OrdersPackRepository.findById(ordersPack_id);
         let orders: Order[] =  ordersPack.orders as Order[];
         
         orders.splice(orders.findIndex(order =>{
