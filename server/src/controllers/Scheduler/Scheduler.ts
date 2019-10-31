@@ -82,7 +82,9 @@ export class Scheduler{
      * @param ordersPack_id Id del ordersPack
      */
     public static removeScheduling(ordersPack_id: Ref<OrdersPack>){
-        Scheduler.scheduledJobsMap[ordersPack_id as any].cancel();
-        delete Scheduler.scheduledJobsMap[ordersPack_id as any];
+        if(Scheduler.scheduledJobsMap[ordersPack_id as any]){
+            Scheduler.scheduledJobsMap[ordersPack_id as any].cancel();
+            delete Scheduler.scheduledJobsMap[ordersPack_id as any];
+        }
     }
 }

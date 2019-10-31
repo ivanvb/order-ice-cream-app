@@ -38,7 +38,7 @@ export class OrdersPackRoutesController{
         const saved: boolean  = await UserRepository.addOrdersPack(user, savedOrdersPack);
         Scheduler.scheduleOrdersPack(expirationDate, ordersPack._id);
 
-        res.send(200);
+        res.json({ordersPack: savedOrdersPack});
     }
 
     /**
@@ -53,12 +53,12 @@ export class OrdersPackRoutesController{
         if(OrdersPackRoutesController.canUpdateOrdersPack(ordersPack, user_id)){
             if(newExpirationDate){
                 const newDate: Date =  new Date(Number(newExpirationDate));
-                OrdersPackRepository.updateExpirationDate(newDate, ordersPack_id);
+                await OrdersPackRepository.updateExpirationDate(newDate, ordersPack_id);
                 Scheduler.rescheduleOrdersPack(newExpirationDate, ordersPack_id);
             }
     
             if(deleteArray){
-                OrdersPackRepository.deleteOrders(deleteArray, ordersPack_id);
+                await OrdersPackRepository.deleteOrders(deleteArray, ordersPack_id);
             }
             res.sendStatus(200);
             return;
