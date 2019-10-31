@@ -17,11 +17,10 @@ export class UserRoutesController {
         const {email, password} = req.body;
 
         const user: User = await UserRepository.findByEmailAndPassword(email, password);
-        const _id: Ref<User> = (user ? user._id : null);
+        if(!user) 
+            return next(new ExpressError('wrong credentials', ErrorCodes.WRONG_CREDENTIALS,  401));
 
-        if(!_id) return next(new ExpressError('wrong credentials', ErrorCodes.WRONG_CREDENTIALS,  401));
-     
-        res.send({_id: _id});
+        res.send({user: user});
     }
 
     /**
@@ -32,11 +31,11 @@ export class UserRoutesController {
     public static async signUp(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {email, password, name} = req.body;
 
-        if(!email || !password || name) return next(new ExpressError('incomplete information', ErrorCodes.INCOMPLETE_INFORMATION, 400));
+        if(!email || !password || !name) return next(new ExpressError('incomplete information', ErrorCodes.INCOMPLETE_INFORMATION, 400));
         
         const user: User = new UserBuilder(name, email, password).build();
-        const saved: Ref<User> = await UserRepository.save(user);
+        const savedUser: User =  await UserRepository.save(user) as User;
 
-        res.send({saved});
+        res.send({user: savedUser});
     }
 }

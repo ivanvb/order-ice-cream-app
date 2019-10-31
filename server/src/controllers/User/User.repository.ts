@@ -26,9 +26,9 @@ export class UserRepository{
      * Guarda un usuario en la base de datos.
      * @param user Usuario que se quiere guardar.
      */
-    public static async save(user: User): Promise<Ref<User>>{
+    public static async save(user: User): Promise<User>{
         const saved: User = await UserModel.create(user);
-        return (saved ? saved._id : null);
+        return (saved ? saved : null);
     }
 
     /**

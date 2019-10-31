@@ -10,6 +10,8 @@ import {orderRoutes} from './routes/order.routes';
 import { Scheduler } from "./controllers/Scheduler/Scheduler";
 import { ExpressError } from "./controllers/ErrorControllers/ExpressError";
 
+let app: express.Application = express();
+
 /**
  * Punto de entrada de la aplicación.
  */
@@ -17,10 +19,15 @@ import { ExpressError } from "./controllers/ErrorControllers/ExpressError";
 
     ///Se carga la configuración provista en el archivo .env
     dotenv.config();
-    await mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+
+    mongoose.connect(
+        (process.argv.includes('--prod') ? process.env.DATABASE_URL : process.env.TEST_DATABASE_URL), 
+        {
+            useNewUrlParser: true, 
+            useUnifiedTopology: true
+        });
 
     Scheduler.initialize();
-    const app: express.Application = express();
 
     app.use(cors());
     app.use(express.json());
@@ -42,3 +49,5 @@ import { ExpressError } from "./controllers/ErrorControllers/ExpressError";
         });
     })
 })();
+
+module.exports = app;
