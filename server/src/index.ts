@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import path from 'path';
 
 import {userRoutes} from './routes/user.routes';
 import {ordersPackRoutes} from './routes/ordersPack.routes';
@@ -39,9 +40,14 @@ let app: express.Application = express();
     const port: number = Number(process.env.PORT) || 3000;
     app.listen(port);
 
+    app.use(express.static(path.join(path.resolve(__dirname, '..', '..', '..'), '/client/build/')));
     app.use('/user', userRoutes);
     app.use('/ordersPack', ordersPackRoutes);
     app.use('/order', orderRoutes);
+
+    app.get('*', (req: express.Request, res: express.Response) =>{
+        res.sendFile(path.join(path.resolve(__dirname, '..', '..', '..'), '/client/build/index.html'));
+    });
 
     ///Error handling middleware.
     app.use(function(error: ExpressError, req: express.Request, res: express.Response, next: express.NextFunction){
