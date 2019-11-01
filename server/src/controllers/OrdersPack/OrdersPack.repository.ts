@@ -9,7 +9,7 @@ export class OrdersPackRepository{
      * Devuelve todos los OrdersPack.
      */
     public static async find(): Promise<OrdersPack[]>{
-        const ordersPack = await OrdersPackModel.find().populate('orders');
+        const ordersPack = await OrdersPackModel.find().populate({path: 'orders', populate: 'user_id'}).populate('creator');
         return ordersPack;
     }
 

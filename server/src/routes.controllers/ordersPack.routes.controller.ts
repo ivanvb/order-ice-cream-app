@@ -111,4 +111,14 @@ export class OrdersPackRoutesController{
 
         next(new ExpressError("there was an error deleting the requested resource", ErrorCodes.GENERIC_DELETE_ERROR, 400));
     }
+
+    /**
+     * Devuelve todos los ordersPack
+     * @param req: Request
+     * @param res: Response
+     */
+    public static async getAll(req: Request, res: Response): Promise<void>{
+        const ordersPacks: OrdersPack[] = await OrdersPackRepository.find();
+        res.json({ordersPacks})
+    }
 }

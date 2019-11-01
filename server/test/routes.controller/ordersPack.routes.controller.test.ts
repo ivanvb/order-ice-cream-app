@@ -124,4 +124,21 @@ describe('OrdersPack Routes Controller', async ()=>{
         const found: OrdersPack = await OrdersPackRepository.findById(ordersPack._id);
         expect(found).to.be.null;
     });
+
+    it('Should be able to get all ordersPacks with all their information including who created it.', async ()=>{
+        await OrdersPackRepository.save(new OrdersPackBuilder(testUser, expirationDate, 'List1').build());
+        await OrdersPackRepository.save(new OrdersPackBuilder(testUser, expirationDate, 'List2').build());
+        await OrdersPackRepository.save(new OrdersPackBuilder(testUser, expirationDate, 'List3').build());
+
+        const res: Response = await request(app)
+                                .get('/ordersPack/')
+                                .set('Accept', 'application/json')
+                                .expect(200);
+
+        const ordersPacks: OrdersPack[] = (<any> res.body).ordersPacks;
+        const user: User = <User>ordersPacks[1].creator;
+
+        expect(ordersPacks.length).to.equal(3);
+        expect(user.name).to.equal(testUser.name);
+    })
 })

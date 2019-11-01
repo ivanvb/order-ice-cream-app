@@ -18,6 +18,7 @@ class OrdersPackRoutes{
         this.router.post("/create", OrdersPackRoutesController.createOrdersPack);
         this.router.put("/edit", OrdersPackRoutesController.updateOrdersPack);
         this.router.delete("/", OrdersPackRoutesController.deleteOrdersPack);
+        this.router.get('/', OrdersPackRoutesController.getAll);
     }
 }
 
