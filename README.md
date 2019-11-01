@@ -6,13 +6,21 @@ Este proyecto busca satisfacer los requerimientos de la empresa Rantic, que en u
 >
 >La empresa requiere de tus servicios para poder solucionar esta problemática que ha disminuido la productividad de sus colaboradores.
 
-
 ## Getting Started
 
-Para tener este proyecto funcionando hay que hacer un clone a este repositorio
+Estas instrucciones harán que el correcto funcione correctamente en su equipo.
 
+### Prerrequisitos
+
+Para que este proyecto funcione correctamente se debe instalar contar con Node.js instalado
+el cual se puede obtener [aqui](https://nodejs.org/es/download/).
+
+De igual forma se debe contar con una forma de acceder a una base de datos en MongoDB. En caso
+de no contar con una puede instalar una instancia local de la misma desde [aquí](https://docs.mongodb.com/manual/installation/).
+
+### Instalación del proyecto 
 ```
-https://github.com/ivb98/order-ice-cream-app.git
+git clone https://github.com/ivb98/order-ice-cream-app.git
 ```
 
 Una vez tenemos el proyecto en nuestra máquina tenemos que hacer
@@ -44,7 +52,7 @@ Este comando transpila el código Typescript que se encuentra dentro de la carpe
 
 ## Running the tests
 
-Para realizar los tests del servidor dentro del fichero ```server``` se ejecuta el comando 
+Para ejecutar los tests del servidor dentro del fichero ```server``` se ejecuta el comando 
 ```
 npm run test
 ```
@@ -54,7 +62,7 @@ npm run server-test
 ```
 dando cualquiera de estos el resultado de ejecutar los tests hechos en [Mocha](https://mochajs.org/) que prueban diversos aspectos de la aplicación.
 
-## Built With
+## Esta aplicación utiliza
 
 * [Node.js](https://nodejs.org/es/) 
 * [Express](https://expressjs.com/es//)
@@ -62,6 +70,6 @@ dando cualquiera de estos el resultado de ejecutar los tests hechos en [Mocha](h
 * [Typescript](https://www.typescriptlang.org/index.html)
 * [Mocha](https://mochajs.org/) - For testing
 
-## Authors
+## Autor
 
 * **Iván Valette**
