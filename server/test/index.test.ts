@@ -6,7 +6,6 @@ import { OrdersPackModel } from '../src/controllers/OrdersPack/OrdersPack';
 /**
  * Removes all information of the test database.
  */
-
 export async function clearDatabase(){
     if(!process.argv.includes('--prod')){
         try{
@@ -25,4 +24,8 @@ export async function clearDatabase(){
 
 before(async ()=>{
     clearDatabase();
-})
+});
+
+after(async ()=>{
+    clearDatabase();
+});
