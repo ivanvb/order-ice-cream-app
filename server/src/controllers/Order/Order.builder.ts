@@ -75,6 +75,9 @@ export class OrderBuilder{
     }
 }
 
+/**
+ * Enum que contiene los métodos de pago disponibles.
+ */
 export enum PaymentMethod{
     TARJETA,
     EFECTIVO

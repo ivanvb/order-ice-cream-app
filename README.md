@@ -48,8 +48,11 @@ Para realizar los tests del servidor dentro del fichero ```server``` se ejecuta 
 ```
 npm run test
 ```
-
-el cual ejecutará los tests hechos en Mocha que prueban diversos aspectos de la aplicación.
+O desde la raíz del proyecto se ejecuta el comando
+```
+npm run server-test
+```
+dando cualquiera de estos el resultado de ejecutar los tests hechos en [Mocha](https://mochajs.org/) que prueban diversos aspectos de la aplicación.
 
 ## Built With
 

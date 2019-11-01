@@ -1,3 +1,8 @@
+/**
+ * Códigos de error que retorna el API cuando una petición
+ * falla o alguno de los datos necesarios para su correcto
+ * funcionamiento resulta erróneo.
+ */
 export enum ErrorCodes{
     WRONG_CREDENTIALS = "1001",
     INCOMPLETE_INFORMATION = "1002",

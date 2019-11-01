@@ -17,6 +17,11 @@ export class Entity{
     @prop()
     public updatedAt: Date;
 
+    /**
+     * Inicializa un objecto de la clase Entity.
+     * @param createdAt Fecha de creación
+     * @param updatedAt Fecha de actualización
+     */
     constructor(createdAt: Date, updatedAt: Date) {
         this.createdAt = (createdAt ? createdAt : new Date());
         this.updatedAt = (updatedAt ? updatedAt : this.createdAt);

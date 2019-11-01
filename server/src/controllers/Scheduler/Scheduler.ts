@@ -24,7 +24,7 @@ export class Scheduler{
     private static scheduledJobsMap: JobMap = {};
 
     /**
-     * Calendariza todos los ordersPack que no han expirado.
+     * Calendariza todos los OrdersPack que no han expirado.
      */
     public static async initialize(){
         const ordersPacks: OrdersPack[] = await OrdersPackRepository.find();
@@ -54,7 +54,7 @@ export class Scheduler{
      * @param ordersPack_id iId del ordersPack
      */
     private static async notifyExpiration(ordersPack_id: Ref<OrdersPack> | string){
-        const senderEmail = await Emailer.sendEmailNotification(ordersPack_id);
+        await Emailer.sendEmailNotification(ordersPack_id);
 
         for(let registeredOrdesPack_id of Object.keys(scheduleJob)){
             if(registeredOrdesPack_id == ordersPack_id) delete scheduleJob[registeredOrdesPack_id];

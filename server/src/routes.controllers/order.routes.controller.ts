@@ -11,6 +11,10 @@ import { NextFunction } from "connect";
 import { ExpressError } from "../controllers/ErrorControllers/ExpressError";
 import { ErrorCodes } from "../controllers/ErrorControllers/ErrorCodeEnum";
 
+/**
+ * Clase que contiene los métodos relacionados a Order para ser accedidos
+ * mediante un API.
+ */
 export class OrderRoutesController{
 
     /**

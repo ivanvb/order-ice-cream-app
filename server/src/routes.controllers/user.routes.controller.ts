@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { User, UserModel} from '../controllers/User/User'
+import { User } from '../controllers/User/User'
 import { UserRepository } from '../controllers/User/User.repository';
 import { UserBuilder } from '../controllers/User/User.builder';
-import { Ref } from '@typegoose/typegoose';
 import { ExpressError } from '../controllers/ErrorControllers/ExpressError';
 import { ErrorCodes } from '../controllers/ErrorControllers/ErrorCodeEnum';
 
+/**
+ * Clase que contiene los métodos relacionados a OrdersRoute para ser accedidos
+ * mediante un API.
+ */
 export class UserRoutesController {
 
     /**

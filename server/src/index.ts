@@ -20,6 +20,7 @@ let app: express.Application = express();
     ///Se carga la configuración provista en el archivo .env
     dotenv.config();
 
+    ///Se conecta a la base de datos del ambiente de desarrollo especificado.
     mongoose.connect(
         (process.argv.includes('--prod') ? process.env.DATABASE_URL : process.env.TEST_DATABASE_URL), 
         {
