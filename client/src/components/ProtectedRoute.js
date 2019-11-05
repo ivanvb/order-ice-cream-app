@@ -6,7 +6,6 @@ const ProtectedRoute = ({component: Component, condition, pathToRedir, ...rest})
 
     const [user] = useContext(UserContext);
     condition = (condition === undefined ? user.isAuthenticated : condition);
-    console.log(condition);
 
     return(
         <Route {...rest} render={(props) =>(

@@ -37,7 +37,6 @@ class Login extends React.Component{
             setUser(() => {
                 return {...json.user, isAuthenticated: true}
             });
-            this.setState({...this.initialState});            
         }
     }
 

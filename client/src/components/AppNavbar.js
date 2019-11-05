@@ -7,7 +7,6 @@ import { UserContext } from './UserContext';
 const AppNavbar = () => {
     const [user, setUser] = useContext(UserContext);
     
-    if(user.isAuthenticated) console.log(user)
     return (
         <Navbar
         collapseOnSelect expand="lg" bg="light" variant="light">
@@ -22,6 +21,10 @@ const AppNavbar = () => {
                 <LinkContainer to="/about" activeClassName="active">
                     <Nav.Item as={Nav.Link}>About</Nav.Item>
                 </LinkContainer>
+                {!user.isAuthenticated &&
+                <LinkContainer to="/signup" activeClassName="active">
+                    <Nav.Item as={Nav.Link}>Sign Up</Nav.Item>
+                </LinkContainer>}
                 {user.isAuthenticated && <Nav.Item as={Nav.Link}>{user.name}</Nav.Item>}
                 {user.isAuthenticated && <Nav.Item as={Nav.Link} onClick={()=>{
                     setUser(()=> {
