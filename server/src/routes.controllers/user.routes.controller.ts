@@ -18,7 +18,6 @@ export class UserRoutesController {
      */
     public static async logIn(req: Request, res: Response, next: NextFunction): Promise<void>{
         const {email, password} = req.body;
-        console.log(email, password, req.body);
         const user: User = await UserRepository.findByEmailAndPassword(email, password);
         if(!user) 
             return next(new ExpressError('wrong credentials', ErrorCodes.WRONG_CREDENTIALS,  401));
