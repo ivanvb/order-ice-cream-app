@@ -1,9 +1,10 @@
 import React from 'react';
 import {UserContext} from './UserContext';
+import Alert from 'react-bootstrap/Alert';
 
 class SignUp extends React.Component{
 
-    initialState = {name: '', email: '', password: ''};
+    initialState = {name: '', email: '', password: '', showAlert: false};
 
     constructor(props){
         super(props);
@@ -34,18 +35,27 @@ class SignUp extends React.Component{
                 return {...json.user, isAuthenticated: true};
             })
         } else {
-
+            this.setState({...this.initialState, showAlert: true});
         }
     }
 
     render(){
         return(
-            <form onSubmit={this.handleSubmit}>
-                <input name="name" onChange={this.handleChanges} value={this.state.name}/>
-                <input name="email" onChange={this.handleChanges} value={this.state.email}/>
-                <input name="password" onChange={this.handleChanges} value={this.state.password}/>
-                <button type="submit">Submit</button>
-            </form>
+            <>
+                <Alert
+                variant='danger'
+                dismissable
+                show={this.state.showAlert}
+                onClose={()=>{this.setState({showAlert: false})}}>
+                    This email is already in use.
+                </Alert>
+                <form onSubmit={this.handleSubmit}>
+                    <input name="name" onChange={this.handleChanges} value={this.state.name}/>
+                    <input name="email" onChange={this.handleChanges} value={this.state.email}/>
+                    <input name="password" onChange={this.handleChanges} value={this.state.password}/>
+                    <button type="submit">Submit</button>
+                </form>
+            </>
         )
     }
 }

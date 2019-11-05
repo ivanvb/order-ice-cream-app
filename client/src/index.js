@@ -4,9 +4,8 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {UserProvider} from './components/UserContext';
 
-
 ReactDOM.render(
     <UserProvider>
         <App />
-    </UserProvider>, 
+    </UserProvider>,
     document.getElementById('root'));
