@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Badge from 'react-bootstrap/Badge';
+import { IoIosCloseCircle, IoMdCreate } from "react-icons/io";
+import { UserContext } from './UserContext';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const ExpandedOrdersPackCard = (props) => {
+    const [user] = useContext(UserContext);
     const {ordersPack} = props;
-    console.log(ordersPack);
+    const expired = Date.now() > new Date(ordersPack.expirationDate);
     ordersPack.expirationDate = new Date(ordersPack.expirationDate);
     const options = { weekday: 'short',
                     year: 'numeric', 
@@ -18,12 +23,21 @@ const ExpandedOrdersPackCard = (props) => {
 
     
     const orders = ordersPack.orders.map(order => {
+        const canModify = !expired && (order.user_id._id === user._id || ordersPack.creator._id === user._id);
         return (
             <ListGroupItem key={order._id}>
-                {order.description}<br></br>
-                {order.price} $<br></br>
-                {'To pay with: ' + (order.paymentMethod ? 'Credit card' : 'Cash')}<br></br>
-                <small className="text-muted">by: {order.user_id.name}</small>
+                <Row>
+                    <Col xs={(canModify ? 9 : 12)}>
+                        {order.description}<br></br>
+                        {order.price} $<br></br>
+                        {'To pay with: ' + (order.paymentMethod ? 'Credit card' : 'Cash')}<br></br>
+                        <small className="text-muted">by: {order.user_id.name}</small>
+                    </Col>
+                    {canModify && <Col xs={3} className="d-flex justify-content-end">
+                        {order.user_id._id === user._id && <IoMdCreate className="mr-2"/>}
+                        <IoIosCloseCircle />
+                    </Col>}    
+                </Row>
             </ListGroupItem>
         )
     })
@@ -42,7 +56,7 @@ const ExpandedOrdersPackCard = (props) => {
             <Card.Body>
                 <Card.Text>
                     Expiration Date: {ordersPack.expirationDate.toLocaleString(undefined, options)}
-                    {Date.now() > ordersPack.expirationDate ? <Badge className="ml-3" pill variant='danger'>Expired</Badge> : ''}
+                    {expired ? <Badge className="ml-3" pill variant='danger'>Expired</Badge> : ''}
                 </Card.Text>
             </Card.Body>
         </Card>

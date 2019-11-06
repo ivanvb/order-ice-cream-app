@@ -21,6 +21,8 @@ const OrdersPack = (props) => {
                         }
                     });
         const json = await res.json();
+        json.order.user_id = {...user};
+
         if(res.status !== 200){
             props.showAlert({variant: 'danger', message: 'There was an error placing your order.'});
         } else {
