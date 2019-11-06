@@ -1,11 +1,11 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import {UserContext} from './UserContext';
-import Alert from 'react-bootstrap/Alert';
+import withAlert from '../hoc/withAlert';
 
 class Login extends React.Component{
 
-    initialState = {email: '', password: '', showAlert: false};
+    initialState = {email: '', password: ''};
 
     constructor(props){
         super(props);
@@ -32,7 +32,8 @@ class Login extends React.Component{
         const json = await res.json();
 
         if(res.status === 401){
-            this.setState({...this.initialState, showAlert: true});            
+            this.setState({...this.initialState});
+            this.props.showAlert({message: 'Wrong credentials', variant: 'danger'});            
         } else {
             const [, setUser] = this.context;
             setUser(() => {
@@ -44,13 +45,6 @@ class Login extends React.Component{
     render(){
         return(
             <>
-                <Alert 
-                variant="danger"
-                show={this.state.showAlert}
-                dismissible
-                onClose={()=>{this.setState({showAlert: false})}}>
-                     Wrong credentials
-                </Alert>
                 <Container>
                     <form onSubmit={this.tryLogIn}>
                         <input name="email" value={this.state.email} onChange={this.handleChange}/>
@@ -64,5 +58,4 @@ class Login extends React.Component{
 }
 
 Login.contextType = UserContext;
-
-export default Login;
+export default withAlert(Login);

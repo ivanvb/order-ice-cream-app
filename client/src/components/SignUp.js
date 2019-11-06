@@ -1,10 +1,10 @@
 import React from 'react';
 import {UserContext} from './UserContext';
-import Alert from 'react-bootstrap/Alert';
+import withAlert from '../hoc/withAlert';
 
 class SignUp extends React.Component{
 
-    initialState = {name: '', email: '', password: '', showAlert: false};
+    initialState = {name: '', email: '', password: ''};
 
     constructor(props){
         super(props);
@@ -35,20 +35,14 @@ class SignUp extends React.Component{
                 return {...json.user, isAuthenticated: true};
             })
         } else {
-            this.setState({...this.initialState, showAlert: true});
+            this.props.showAlert({variant: 'danger', message: `The email ${this.state.email} is already in use.`});
+            this.setState({...this.initialState});
         }
     }
 
     render(){
         return(
             <>
-                <Alert
-                variant='danger'
-                dismissable
-                show={this.state.showAlert}
-                onClose={()=>{this.setState({showAlert: false})}}>
-                    This email is already in use.
-                </Alert>
                 <form onSubmit={this.handleSubmit}>
                     <input name="name" onChange={this.handleChanges} value={this.state.name}/>
                     <input name="email" onChange={this.handleChanges} value={this.state.email}/>
@@ -61,4 +55,4 @@ class SignUp extends React.Component{
 }
 
 SignUp.contextType = UserContext;
-export default SignUp;
+export default withAlert(SignUp);
