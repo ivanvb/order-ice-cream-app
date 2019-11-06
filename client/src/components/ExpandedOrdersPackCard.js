@@ -23,7 +23,8 @@ const ExpandedOrdersPackCard = (props) => {
 
     
     const orders = ordersPack.orders.map(order => {
-        const canModify = !expired && (order.user_id._id === user._id || ordersPack.creator._id === user._id);
+        const isOwner =  ordersPack.creator._id === user._id;
+        const canModify = !expired && (order.user_id._id === user._id || isOwner);
         return (
             <ListGroupItem key={order._id}>
                 <Row>
@@ -34,8 +35,13 @@ const ExpandedOrdersPackCard = (props) => {
                         <small className="text-muted">by: {order.user_id.name}</small>
                     </Col>
                     {canModify && <Col xs={3} className="d-flex justify-content-end">
-                        {order.user_id._id === user._id && <IoMdCreate className="mr-2"/>}
-                        <IoIosCloseCircle />
+                        {order.user_id._id === user._id && <IoMdCreate className="mr-2" style={{'cursor': 'pointer'}} />}
+                        <IoIosCloseCircle style={{'cursor': 'pointer'}} 
+                        onClick={
+                            ()=>{
+                                if(isOwner) props.adminDelete(order)
+                                else props.personalDelete(order);
+                            }} />
                     </Col>}    
                 </Row>
             </ListGroupItem>
