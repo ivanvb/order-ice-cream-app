@@ -10,6 +10,7 @@ const AppNavbar = () => {
     return (
         <Navbar
         collapseOnSelect expand="lg" bg="light" variant="light">
+            
             <LinkContainer exact={true} to="/" activeClassName="active">
                 <Nav.Item as={Navbar.Brand}>
                     Helados

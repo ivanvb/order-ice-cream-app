@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import OrdersPack from './OrdersPack';
+import OrdersPackCard from './OrdersPackCard';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -20,7 +20,7 @@ class Home extends Component {
         const cards = this.state.ordersPacks.map(ordersPack =>{
             return (
                 <Col key={ordersPack._id} xs={6} lg={4}>
-                    <OrdersPack  data={ordersPack}/>
+                    <OrdersPackCard data={ordersPack}/>
                 </Col>
             )
         })
