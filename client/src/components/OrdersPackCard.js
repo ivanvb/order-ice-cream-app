@@ -18,7 +18,7 @@ const OrdersPackCard = (props) => {
     return (
         <LinkContainer style={{cursor: "pointer"}} to={{
             pathname: '/expanded',
-            order: data
+            ordersPack: data
         }}>
             <Card className="mt-3 mb-3" >
                 <Card.Body>

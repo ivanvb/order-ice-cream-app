@@ -7,7 +7,7 @@ import {UserContext} from './components/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
-import ExpandedOrdersPackCard from './components/ExpandedOrdersPackCard';
+import OrdersPack from './components/OrdersPack';
 
 function App(){
     var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
@@ -39,7 +39,7 @@ function App(){
                         component={Home}/>
                     <ProtectedRoute
                         path="/expanded"
-                        component={ExpandedOrdersPackCard}/>
+                        component={OrdersPack}/>
                     <Route path="*">
                         404 not found
                     </Route>
