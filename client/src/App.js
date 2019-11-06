@@ -6,6 +6,7 @@ import Login from './components/Login';
 import {UserContext} from './components/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignUp from './components/SignUp';
+import Home from './components/Home';
 
 function App(){
     const [user] = useContext(UserContext);
@@ -20,13 +21,16 @@ function App(){
                         exact 
                         path="/" 
                         condition={!user.isAuthenticated}
-                        pathToRedir="/about"
-                         component={Login}/>
+                        pathToRedir="/home"
+                        component={Login}/>
                     <ProtectedRoute
                         path="/signup"
                         condition={!user.isAuthenticated}
-                        pathToRedir="/about"
+                        pathToRedir="/home"
                         component={SignUp}/>
+                    <ProtectedRoute
+                        path="/home"
+                        component={Home}/>
                     <Route path="*">
                         404 not found
                     </Route>
